@@ -31,7 +31,7 @@ export const getContentfulRequest = (type, contentQuery) => {
 
   return {
     query,
-    url: PROXY_URL,
+    url: proxyUrl,
   };
 };
 
