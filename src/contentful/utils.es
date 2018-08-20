@@ -12,26 +12,26 @@ export const configureContentful = (options) => {
   proxyUrl = options.url;
 };
 
-export const getContentfulRequest = (type, query) => {
+export const getContentfulRequest = (type, contentQuery) => {
   const { id, token, preview_token } = space;
   const access_token = preview ? preview_token : token;
   const content_type = space[`content_type_${type}`];
 
-  const newQuery = {
-    ...query,
+  const proxyQuery = {
+    ...contentQuery,
     access_token,
     content_type,
     'fields.localization': language,
   };
 
-  const url = `/spaces/${id}/entries?${stringify(newQuery)}`;
+  const query_string = `/spaces/${id}/entries?${stringify(proxyQuery)}`;
+  const query = { query_string };
+  // BE is too lazy to check for value
+  if (preview) query.preview = preview;
 
   return {
-    url: proxyUrl,
-    query: {
-      preview,
-      query_string: url,
-    },
+    query,
+    url: PROXY_URL,
   };
 };
 
