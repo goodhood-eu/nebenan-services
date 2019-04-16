@@ -1,4 +1,4 @@
-import { stringify } from 'querystring';
+import { stringify } from 'qs';
 
 let space;
 let language;
