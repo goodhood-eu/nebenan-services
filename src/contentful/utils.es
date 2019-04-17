@@ -24,7 +24,7 @@ export const getContentfulRequest = (type, contentQuery) => {
     'fields.localization': language,
   };
 
-  const query_string = `/spaces/${id}/entries?${stringify(proxyQuery)}`;
+  const query_string = `/spaces/${id}/entries?${stringify(proxyQuery, { indices: false })}`;
   const query = { query_string };
   // BE is too lazy to check for value
   if (preview) query.preview = preview;
