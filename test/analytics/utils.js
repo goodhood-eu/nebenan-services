@@ -5,11 +5,7 @@ const {
   getUtmKeys,
   isExpired,
   ensureCalled,
-  uidSegment,
-  getUID,
 } = require('../../lib/analytics/utils');
-
-const segmentRegex = /^[a-f0-9]+$/;
 
 describe('analytics/utils', () => {
   it('getUtmKeys', () => {
@@ -63,23 +59,5 @@ describe('analytics/utils', () => {
     ensureCalled(timeoutSpy, 5);
     assert(timeoutSpy.notCalled, 'timeout not called yet');
     setTimeout(delayedTest, 20);
-  });
-
-  it('uidSegment', () => {
-    const segment1 = uidSegment();
-    const segment2 = uidSegment();
-
-    assert.isString(segment1, 'returns correct data format');
-    assert.notEqual(segment1, segment2, 'returns different segments');
-    assert.match(segment1, segmentRegex, 'correct pattern format');
-  });
-
-  it('getUID', () => {
-    const uuid = getUID();
-    const regStr = segmentRegex.toString().slice(2, -2);
-    const uidRegexString = `^${regStr}${regStr}-${regStr}-${regStr}-${regStr}-${regStr}${regStr}${regStr}$`;
-
-    assert.equal(uuid.split('-').length, 5, 'returns correct number of segments');
-    assert.match(uuid, new RegExp(uidRegexString), 'correct pattern format');
   });
 });

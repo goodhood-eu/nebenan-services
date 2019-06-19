@@ -37,24 +37,3 @@ export const ensureCalled = (func, timeout = 500) => {
   timerId = setTimeout(proxy, timeout);
   return proxy;
 };
-
-export const uidSegment = () => (
-  Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
-);
-
-export const getUID = () => (
-  [
-    uidSegment(),
-    uidSegment(),
-    '-',
-    uidSegment(),
-    '-',
-    uidSegment(),
-    '-',
-    uidSegment(),
-    '-',
-    uidSegment(),
-    uidSegment(),
-    uidSegment(),
-  ].join('')
-);

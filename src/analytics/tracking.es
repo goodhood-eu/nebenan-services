@@ -1,6 +1,7 @@
 import isEmpty from 'lodash/isEmpty';
+import { getUID } from 'nebenan-helpers/lib/calculations';
 
-import { isExpired, getUtmKeys, getUID } from './utils';
+import { isExpired, getUtmKeys } from './utils';
 
 import {
   UTM_KEY,
