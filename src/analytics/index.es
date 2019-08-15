@@ -58,7 +58,7 @@ export const createAnalytics = (store, history, collector) => {
 
     const unsubscribeStore = store.subscribe(handleChange);
     const unsubscribeHistory = history.listen(handlePageview);
-    handlePageview(history.getCurrentLocation());
+    handlePageview(history.location);
 
     return (() => {
       unsubscribeStore();
