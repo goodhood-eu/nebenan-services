@@ -1,7 +1,7 @@
 import isEmpty from 'lodash/isEmpty';
 import { getUID } from 'nebenan-helpers/lib/calculations';
 
-import { isExpired, getUtmKeys } from './utils';
+import { isExpired, getQuery, getUtmKeys } from './utils';
 
 import {
   UTM_KEY,
@@ -71,7 +71,8 @@ export const touchSessionId = (store, { session }) => {
 };
 
 export const trackPageView = (track, store, previousPage, currentPage) => {
-  const { pathname, query, search } = currentPage;
+  const { pathname, search } = currentPage;
+  const query = getQuery(search);
   const referrer = previousPage || { pathname: null, search: '' };
   const utm = getUtmKeys(query);
   if (!isEmpty(utm)) store.dispatch(setUtm(utm));
