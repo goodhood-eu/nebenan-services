@@ -1,5 +1,9 @@
+import { parse } from 'qs';
+
 const UTM_REGEX = /^utm_/;
 const DNT_POSITIVES = ['yes', '1', 1];
+
+export const getQuery = (search) => parse(search.substr(1));
 
 export const getDoNotTrack = (node) => {
   let value;

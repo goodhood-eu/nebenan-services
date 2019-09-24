@@ -2,12 +2,20 @@ const { assert } = require('chai');
 const sinon = require('sinon');
 
 const {
+  getQuery,
   getUtmKeys,
   isExpired,
   ensureCalled,
 } = require('../../lib/analytics/utils');
 
 describe('analytics/utils', () => {
+  it('getQuery', () => {
+    assert.deepEqual(getQuery(''), {}, 'empty');
+    assert.deepEqual(getQuery('?'), {}, 'empty 2');
+    assert.deepEqual(getQuery('?test=test'), { test: 'test' }, '1 param');
+    assert.deepEqual(getQuery('?test=test&number=2'), { test: 'test', number: '2' }, '2 params');
+  });
+
   it('getUtmKeys', () => {
     const query = {
       utm_hello: 'world',

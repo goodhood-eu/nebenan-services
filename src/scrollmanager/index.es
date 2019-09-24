@@ -1,14 +1,10 @@
+import { createPath } from 'history';
 import { scroll } from 'nebenan-helpers/lib/dom';
+import eventproxy from 'nebenan-helpers/lib/eventproxy';
 
 const ATTEMPTS_RATE = 300;
 const PROXIMITY = 100;
 const MAX_ATTEMPTS = 10;
-
-const getLocationPath = (location) => {
-  if (!location) return null;
-  const { pathname, search, hash } = location;
-  return [pathname, search, hash].join('');
-};
 
 export default (history, node) => {
   const stateHistory = {};
@@ -54,20 +50,20 @@ export default (history, node) => {
 
   const restore = (location) => {
     // update key for the next transition
-    key = getLocationPath(location);
+    key = createPath(location);
 
     // try and restore scroll position for this route, or reset to top
     ensurePosition(stateHistory[key]);
   };
 
   const startProcessing = () => {
-    // need to use `listenBefore` because if modal is shown, it messes up the scroll position
-    const unsubscribeBeforeHook = history.listenBefore(save);
+    // Attempts to store current scroll position
+    const unsubscribeScroll = eventproxy('scroll', save);
     const unsubscribeHook = history.listen(restore);
-    restore(history.getCurrentLocation());
+    restore(history.location);
 
     return () => {
-      unsubscribeBeforeHook();
+      unsubscribeScroll();
       unsubscribeHook();
     };
   };
