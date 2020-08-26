@@ -7,7 +7,7 @@
   "homepage": "https://nebenan.de/",
   "repository": "good-hood-gmbh/nebenan-services",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-services/issues",
-  "version": "4.0.2",
+  "version": "5.0.0",
   "scripts": {
     "reinstall": "rm -rf node_modules package-lock.json && npm install",
     "check": "npm test && npm run lint && echo \"\\033[0;32mReady to publish\\033[0m\"",
