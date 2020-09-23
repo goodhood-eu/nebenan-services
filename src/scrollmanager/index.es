@@ -15,16 +15,16 @@ export default (history, node) => {
 
   const stopAutoScroll = () => {
     if (tid) clearTimeout(tid);
-    node.document.removeEventListener('touchmove', stopAutoScroll);
-    node.document.removeEventListener('mousewheel', stopAutoScroll);
-    node.document.removeEventListener('wheel', stopAutoScroll);
+    node.document.removeEventListener('touchmove', stopAutoScroll, { passive: true });
+    node.document.removeEventListener('mousewheel', stopAutoScroll, { passive: true });
+    node.document.removeEventListener('wheel', stopAutoScroll, { passive: true });
   };
 
   const ensurePosition = (targetPosition = 0) => {
     let iterations = 0;
-    node.document.addEventListener('touchmove', stopAutoScroll);
-    node.document.addEventListener('mousewheel', stopAutoScroll);
-    node.document.addEventListener('wheel', stopAutoScroll);
+    node.document.addEventListener('touchmove', stopAutoScroll, { passive: true });
+    node.document.addEventListener('mousewheel', stopAutoScroll, { passive: true });
+    node.document.addEventListener('wheel', stopAutoScroll, { passive: true });
 
     const scroller = () => {
       iterations += 1;
