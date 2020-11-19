@@ -1,8 +1,0 @@
-!lib/
-src/
-test/
-.babelrc
-.eslintignore
-.eslintrc
-.gitignore
-.npmignore
