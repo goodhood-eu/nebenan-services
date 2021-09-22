@@ -70,7 +70,7 @@ export const touchSessionId = (store, { session }) => {
   store.dispatch(setSessionId(id));
 };
 
-export const trackPageView = (track, store, previousPage, currentPage) => {
+export const trackPageView = (track, store, previousPage, currentPage, getPayload) => {
   const { pathname, search } = currentPage;
   const query = getQuery(search);
   const referrer = previousPage || { pathname: null, search: '' };
@@ -84,6 +84,7 @@ export const trackPageView = (track, store, previousPage, currentPage) => {
   touchSessionId(store, state);
 
   const payload = {
+    ...getPayload({ store, previousPage, currentPage }),
     event: 'virtual_page_view',
     virtual_page_url: pathname,
     virtual_page_query: search.substr(1),
