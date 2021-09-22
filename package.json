@@ -7,7 +7,7 @@
   "homepage": "https://nebenan.de/",
   "repository": "good-hood-gmbh/nebenan-services",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-services/issues",
-  "version": "5.5.0",
+  "version": "5.6.0",
   "files": [
     "lib/*.js",
     "lib/*/*.js"

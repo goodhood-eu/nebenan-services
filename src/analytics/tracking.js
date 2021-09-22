@@ -73,7 +73,7 @@ export const touchSessionId = (store, { session }) => {
 export const trackPageView = (track, store, previousPage, currentPage, getPayload) => {
   const { pathname, search } = currentPage;
   const query = getQuery(search);
-  const referrer = previousPage || { pathname: null, search: '' };
+  const referrer = previousPage || { pathname: document ? document.referrer : null, search: '' };
   const utm = getUtmKeys(query);
   if (!isEmpty(utm)) store.dispatch(setUtm(utm));
 
