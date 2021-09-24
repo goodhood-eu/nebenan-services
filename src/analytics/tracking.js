@@ -1,7 +1,7 @@
 import isEmpty from 'lodash/isEmpty';
 import { getUID } from 'nebenan-helpers/lib/calculations';
 
-import { isExpired, getQuery, getUtmKeys } from './utils';
+import { isExpired, getQuery, getUtmKeys, getUrlFromPage } from './utils';
 
 import {
   UTM_KEY,
@@ -71,9 +71,8 @@ export const touchSessionId = (store, { session }) => {
 };
 
 export const trackPageView = (track, store, previousPage, currentPage, getPayload) => {
-  const { pathname, search } = currentPage;
-  const query = getQuery(search);
-  const referrer = previousPage || { pathname: document ? document.referrer : null, search: '' };
+  const query = getQuery(currentPage.search);
+  const referrer = previousPage || { pathname: document?.referrer, search: '' };
   const utm = getUtmKeys(query);
   if (!isEmpty(utm)) store.dispatch(setUtm(utm));
 
@@ -83,11 +82,13 @@ export const trackPageView = (track, store, previousPage, currentPage, getPayloa
   // Don't let sessions expire whilst still browsing
   touchSessionId(store, state);
 
+  const url = getUrlFromPage(currentPage, global);
+
   const payload = {
     ...getPayload({ store, previousPage, currentPage }),
     event: 'virtual_page_view',
-    virtual_page_url: pathname,
-    virtual_page_query: search.substr(1),
+    virtual_page_url: url.origin + url.pathname,
+    virtual_page_query: url.search.substr(1),
     referrer_url: referrer.pathname,
     referrer_query: referrer.search.substr(1),
   };

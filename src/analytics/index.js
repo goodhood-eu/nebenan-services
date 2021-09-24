@@ -69,11 +69,7 @@ export const createAnalytics = (
   const state = store.getState();
   let currentPage = null;
 
-  const handlePageview = (page) => {
-    const newPage = {
-      ...page,
-      pathname: window?.location.href || page.pathname,
-    };
+  const handlePageview = (newPage) => {
     trackPageView(track, store, currentPage, newPage, getPageviewPayload);
     currentPage = newPage;
   };
