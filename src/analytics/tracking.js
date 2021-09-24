@@ -72,7 +72,9 @@ export const touchSessionId = (store, { session }) => {
 
 export const trackPageView = (track, store, previousPage, currentPage, getPayload) => {
   const query = getQuery(currentPage.search);
-  const referrer = previousPage || { pathname: document?.referrer, search: '' };
+  const referrer = previousPage
+    ? getUrlFromPage(previousPage, global)
+    : new URL(document.referrer);
   const utm = getUtmKeys(query);
   if (!isEmpty(utm)) store.dispatch(setUtm(utm));
 
@@ -89,7 +91,7 @@ export const trackPageView = (track, store, previousPage, currentPage, getPayloa
     event: 'virtual_page_view',
     virtual_page_url: url.origin + url.pathname,
     virtual_page_query: url.search.substr(1),
-    referrer_url: referrer.pathname,
+    referrer_url: referrer.origin + referrer.pathname,
     referrer_query: referrer.search.substr(1),
   };
 
