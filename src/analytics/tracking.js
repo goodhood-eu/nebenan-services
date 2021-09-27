@@ -70,6 +70,8 @@ export const touchSessionId = (store, { session }) => {
   store.dispatch(setSessionId(id));
 };
 
+const NULL_REFERRER_URL = { origin: '', pathname: '', search: '' };
+
 export const trackPageView = (track, store, previousPage, currentPage, getPayload) => {
   const query = getQuery(currentPage.search);
 
@@ -84,10 +86,12 @@ export const trackPageView = (track, store, previousPage, currentPage, getPayloa
 
   const url = getUrlFromPage(currentPage, global);
 
-  let referrer;
-  if (previousPage) referrer = getUrlFromPage(previousPage, global);
-  else if (document?.referrer) referrer = new URL(document.referrer);
-  else referrer = { origin: '', pathname: '', search: '' };
+  let referrer = NULL_REFERRER_URL;
+  if (previousPage) {
+    referrer = getUrlFromPage(previousPage, global);
+  } else if (document?.referrer) {
+    referrer = new URL(document.referrer);
+  }
 
   const payload = {
     ...getPayload({ store, previousPage, currentPage }),
