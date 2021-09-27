@@ -64,7 +64,7 @@ export const createAnalytics = (
   collector,
   {
     getPageviewPayload = DEFAULT_GET_PAGEVIEW_PAYLOAD,
-  },
+  } = {},
 ) => {
   const state = store.getState();
   let currentPage = null;
