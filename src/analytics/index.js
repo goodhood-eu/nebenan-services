@@ -38,12 +38,39 @@ export const track = (payload, done) => {
   dataCollector.push(payloadOverride || payload);
 };
 
-export const createAnalytics = (store, history, collector) => {
+const DEFAULT_GET_PAGEVIEW_PAYLOAD = () => {};
+
+/**
+ * Callback for providing additional data to the page-view event.
+ *
+ * @callback getPageviewPayloadCallback
+ * @param {Object} options
+ * @param options.store store
+ * @param options.previousPage previous page
+ * @param options.currentPage current page
+ */
+
+/**
+ *
+ * @param store
+ * @param history
+ * @param collector
+ * @param {getPageviewPayloadCallback} getPageviewPayload
+ * @returns {{startTracking: (function(): function(): void)}}
+ */
+export const createAnalytics = (
+  store,
+  history,
+  collector,
+  {
+    getPageviewPayload = DEFAULT_GET_PAGEVIEW_PAYLOAD,
+  },
+) => {
   const state = store.getState();
   let currentPage = null;
 
   const handlePageview = (newPage) => {
-    trackPageView(track, store, currentPage, newPage);
+    trackPageView(track, store, currentPage, newPage, getPageviewPayload);
     currentPage = newPage;
   };
 

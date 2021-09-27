@@ -1,7 +1,7 @@
 import isEmpty from 'lodash/isEmpty';
 import { getUID } from 'nebenan-helpers/lib/calculations';
 
-import { isExpired, getQuery, getUtmKeys } from './utils';
+import { isExpired, getQuery, getUtmKeys, getUrlFromPage } from './utils';
 
 import {
   UTM_KEY,
@@ -70,10 +70,11 @@ export const touchSessionId = (store, { session }) => {
   store.dispatch(setSessionId(id));
 };
 
-export const trackPageView = (track, store, previousPage, currentPage) => {
-  const { pathname, search } = currentPage;
-  const query = getQuery(search);
-  const referrer = previousPage || { pathname: document ? document.referrer : null, search: '' };
+const NULL_REFERRER_URL = { origin: '', pathname: '', search: '' };
+
+export const trackPageView = (track, store, previousPage, currentPage, getPayload) => {
+  const query = getQuery(currentPage.search);
+
   const utm = getUtmKeys(query);
   if (!isEmpty(utm)) store.dispatch(setUtm(utm));
 
@@ -83,11 +84,21 @@ export const trackPageView = (track, store, previousPage, currentPage) => {
   // Don't let sessions expire whilst still browsing
   touchSessionId(store, state);
 
+  const url = getUrlFromPage(currentPage, global);
+
+  let referrer = NULL_REFERRER_URL;
+  if (previousPage) {
+    referrer = getUrlFromPage(previousPage, global);
+  } else if (document?.referrer) {
+    referrer = new URL(document.referrer);
+  }
+
   const payload = {
+    ...getPayload({ store, previousPage, currentPage }),
     event: 'virtual_page_view',
-    virtual_page_url: pathname,
-    virtual_page_query: search.substr(1),
-    referrer_url: referrer.pathname,
+    virtual_page_url: url.origin + url.pathname,
+    virtual_page_query: url.search.substr(1),
+    referrer_url: referrer.origin + referrer.pathname,
     referrer_query: referrer.search.substr(1),
   };
 

@@ -41,3 +41,7 @@ export const ensureCalled = (func, timeout = 500) => {
   timerId = setTimeout(proxy, timeout);
   return proxy;
 };
+
+export const getUrlFromPage = ({ pathname, search }, window) => (
+  new URL(pathname + search, window.location.origin)
+);
