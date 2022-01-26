@@ -7,7 +7,7 @@
   "homepage": "https://nebenan.de/",
   "repository": "good-hood-gmbh/nebenan-services",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-services/issues",
-  "version": "5.8.0",
+  "version": "6.0.0",
   "files": [
     "lib/*.js",
     "lib/*/*.js"
@@ -43,9 +43,8 @@
     "local-storage-adapter": "^2.0.0",
     "lodash": "^4.17.15",
     "mocha": "^8.2.1",
-    "nebenan-helpers": "^6.0.0",
-    "nebenan-react-hocs": "^8.2.0",
-    "nebenan-redux-tools": "^5.8.0",
+    "nebenan-eventproxy": "^1.0.0",
+    "nebenan-redux-tools": "^6.0.0",
     "normalizr": "^3.6.1",
     "qs": "^6.7.0",
     "react": "^17.0.1",
@@ -55,14 +54,17 @@
     "sinon": "^10.0.0",
     "updeep": "^1.1.0"
   },
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "nebenan-helpers": "^7.0.0",
+    "nebenan-react-hocs": "^9.0.0"
+  },
   "peerDependencies": {
     "@babel/runtime": "^7.x.x",
     "date-fns": "^2.x.x",
     "history": "^4.10.1",
     "local-storage-adapter": "^2.0.0",
-    "lodash": "^4.17.15",
-    "nebenan-helpers": "^4.x.x || ^5.0.0 || ^6.0.0",
-    "nebenan-redux-tools": "^4.x.x || ^5.x.x",
+    "nebenan-eventproxy": "^1.0.0",
     "normalizr": "^3.x.x",
     "qs": "^6.x.x",
     "updeep": "^1.1.0"

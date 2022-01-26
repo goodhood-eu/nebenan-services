@@ -1,6 +1,6 @@
 import { createPath } from 'history';
 import { scroll } from 'nebenan-helpers/lib/dom';
-import eventproxy from 'nebenan-helpers/lib/eventproxy';
+import eventproxy from 'nebenan-eventproxy';
 
 const ATTEMPTS_RATE = 300;
 const PROXIMITY = 100;
