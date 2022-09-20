@@ -38,7 +38,7 @@ export const getContentfulRequest = (type, contentQuery) => {
 export const formatImage = (image, assets) => {
   const ref = assets[image.sys.id];
   if (!ref) return null;
-  return `https:${ref.fields.file.url}`;
+  return `https:${ref.fields.file?.url}`;
 };
 
 export const formatImages = (list, assets) => (
