@@ -32,6 +32,7 @@ export const getContentfulRequest = (type, contentQuery) => {
   return {
     query,
     url: proxyUrl,
+    graceful: true,
   };
 };
 
