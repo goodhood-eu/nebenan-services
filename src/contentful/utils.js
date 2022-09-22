@@ -38,8 +38,11 @@ export const getContentfulRequest = (type, contentQuery) => {
 
 export const formatImage = (image, assets) => {
   const ref = assets[image.sys.id];
-  if (!ref) return null;
-  return `https:${ref.fields.file?.url}`;
+  // optional chaining saves page crash when contentful content in staging spaces is missing
+  const url = ref?.fields?.file?.url;
+  if (!url) return null;
+
+  return `https:${url}`;
 };
 
 export const formatImages = (list, assets) => (
