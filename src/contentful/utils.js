@@ -1,4 +1,5 @@
 import { stringify } from 'qs';
+import { createRequest } from 'nebenan-redux-tools/lib/network';
 
 let space;
 let language;
@@ -33,6 +34,31 @@ export const getContentfulRequest = (type, contentQuery) => {
     query,
     url: proxyUrl,
     graceful: true,
+  };
+};
+
+export const getContentfulRequestPromise = (type, contentQuery) => {
+  const promise = new Promise((resolve, reject) => {
+    const request = getContentfulRequest(type, contentQuery);
+    console.log('getContentfulRequest created: ');
+    console.log(request);
+
+    return createRequest(request).then(
+      (payload) => {
+        console.log('createRequest resolves with payload: ');
+        console.log(payload);
+
+        if (payload.errors) {
+          // Really rejecting would lead to Error Modal on FE....
+          console.log('would reject due to error....');
+        }
+
+        return resolve(payload);
+      });
+  });
+
+  return {
+    requestPromise: promise,
   };
 };
 

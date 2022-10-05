@@ -21,7 +21,8 @@
     "lint": "eslint ./",
     "lint:tofile": "eslint --no-color -o ./eslint-report.log ./",
     "test": "npm run build && TZ='GMT' mocha \"test/**/*.js\"",
-    "test:tofile": "npm run build && TZ='GMT' mocha --no-colors -R spec \"test/**/*.js\" 2>&1 | tee test-report.log"
+    "test:tofile": "npm run build && TZ='GMT' mocha --no-colors -R spec \"test/**/*.js\" 2>&1 | tee test-report.log",
+    "yalc": "npm i && npm run build && yalc push"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.0",
