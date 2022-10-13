@@ -38,27 +38,26 @@ export const getContentfulRequest = (type, contentQuery) => {
 };
 
 export const getContentfulRequestPromise = (type, contentQuery) => {
-  const promise = new Promise((resolve, reject) => {
-    const request = getContentfulRequest(type, contentQuery);
-    console.log('getContentfulRequest created: ');
-    console.log(request);
+  const requestConfig = getContentfulRequest(type, contentQuery);
 
-    return createRequest(request).then(
-      (payload) => {
-        console.log('createRequest resolves with payload: ');
-        console.log(payload);
+  // store the resolve/reject for usage in the promise middleware
+  let promiseResolve;
+  let promiseReject;
 
-        if (payload.errors) {
-          // Really rejecting would lead to Error Modal on FE....
-          console.log('would reject due to error....');
-        }
-
-        return resolve(payload);
-      });
+  const pp = new Promise((resolve, reject) => {
+    promiseResolve = resolve;
+    promiseReject = reject;
+  }).then(() => {
+    // since createRequest doesnt return a promise, wrap the request in a new promise
+    return new Promise((res) => {
+      res(createRequest(requestConfig));
+    });
   });
 
   return {
-    requestPromise: promise,
+    promiseRequest: pp,
+    promiseResolve,
+    promiseReject,
   };
 };
 
