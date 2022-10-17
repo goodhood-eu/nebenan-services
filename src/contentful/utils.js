@@ -37,28 +37,15 @@ export const getContentfulRequest = (type, contentQuery) => {
   };
 };
 
-export const getContentfulRequestPromise = (type, contentQuery) => {
+const hasValidationErrors = (payload) => payload?.errors;
+
+export const getContentfulRequestPromise = async(type, contentQuery) => {
   const requestConfig = getContentfulRequest(type, contentQuery);
 
-  // store the resolve/reject for usage in the promise middleware
-  let promiseResolve;
-  let promiseReject;
+  const payload = await createRequest(requestConfig);
+  if (hasValidationErrors(payload)) throw new Error('Validation errors');
 
-  const pp = new Promise((resolve, reject) => {
-    promiseResolve = resolve;
-    promiseReject = reject;
-  }).then(() => {
-    // since createRequest doesnt return a promise, wrap the request in a new promise
-    return new Promise((res) => {
-      res(createRequest(requestConfig));
-    });
-  });
-
-  return {
-    promiseRequest: pp,
-    promiseResolve,
-    promiseReject,
-  };
+  return payload;
 };
 
 export const formatImage = (image, assets) => {
