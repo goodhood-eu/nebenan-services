@@ -1,20 +1,22 @@
 import { stringify } from 'qs';
-import { createRequest } from 'nebenan-redux-tools/lib/network';
+import { createRequest as _createRequest } from 'nebenan-redux-tools/lib/network';
 
 let space;
 let language;
 let preview = false;
 let proxyUrl;
+let createRequest;
 
 export const configureContentful = (options) => {
   space = options.space;
   language = options.language;
   preview = options.preview;
   proxyUrl = options.url;
+  createRequest = options.createRequest || _createRequest;
 };
 
 /**
- * @deprecated use #getContentfulRequestPromise instead
+ * @deprecated use #createContentfulRequest instead
  */
 export const getContentfulRequest = (type, contentQuery) => {
   const { id, token, preview_token } = space;
@@ -42,11 +44,9 @@ export const getContentfulRequest = (type, contentQuery) => {
 
 const hasValidationErrors = (payload) => payload?.errors;
 
-export const getContentfulRequestPromise = async(type, contentQuery) => {
-  const requestConfig = getContentfulRequest(type, contentQuery);
-
-  const payload = await createRequest(requestConfig);
-  if (hasValidationErrors(payload)) throw new Error('Validation errors');
+export const createContentfulRequest = async(type, contentQuery) => {
+  const payload = await createRequest(getContentfulRequest(type, contentQuery));
+  if (hasValidationErrors(payload)) throw new Error('Contentful request contains validation errors');
 
   return payload;
 };

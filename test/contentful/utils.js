@@ -4,7 +4,7 @@ const {
   configureContentful,
   formatImages,
   getContentfulRequest,
-  formatImage,
+  formatImage, createContentfulRequest,
 } = require('../../lib/contentful/utils');
 
 const data = require('./scaffolding');
@@ -16,10 +16,16 @@ const SPACE = {
 };
 const LANGUAGE = 'klingon';
 
-configureContentful({ space: SPACE, language: LANGUAGE, url: '/v2/contentfull_proxy.json' });
-
 
 describe('modules/contentful/utils', () => {
+  beforeEach(() => {
+    configureContentful({
+      space: SPACE,
+      language: LANGUAGE,
+      url: '/v2/contentfull_proxy.json',
+    });
+  });
+
   it('getContentfulRequest', () => {
     const testResult = getContentfulRequest('test');
 
@@ -37,6 +43,56 @@ describe('modules/contentful/utils', () => {
 
     assert.include(spaceUrlWithQuery, 'a=5', 'include query params');
     assert.include(spaceUrlWithQuery, 'b=bulbul', 'include query params');
+  });
+
+  describe('createContentfulRequest', () => {
+    context('valid contentful response', () => {
+      it('resolves returned promise', async() => {
+        configureContentful({
+          space: SPACE,
+          language: LANGUAGE,
+          url: '/v2/contentfull_proxy.json',
+          createRequest: () => Promise.resolve(data.validResponse),
+        });
+
+        const payload = await createContentfulRequest('test');
+        assert.deepEqual(payload, data.validResponse);
+      });
+    });
+
+    context('network error', () => {
+      it('rejects returned promise', async() => {
+        configureContentful({
+          space: SPACE,
+          language: LANGUAGE,
+          url: '/v2/contentfull_proxy.json',
+          createRequest: () => Promise.reject({ statusCode: 500 }),
+        });
+
+        try {
+          await createContentfulRequest('test');
+        } catch (error) {
+          assert.equal(error.statusCode, 500);
+        }
+      });
+    });
+
+    context('contentful response with validation errors', () => {
+      it('rejects returned promise', async() => {
+        configureContentful({
+          space: SPACE,
+          language: LANGUAGE,
+          url: '/v2/contentfull_proxy.json',
+          createRequest: () => Promise.resolve(data.responseWithErrors),
+        });
+
+        try {
+          await createContentfulRequest('test');
+        } catch (error) {
+          assert.equal(error.message, 'Contentful request contains validation errors');
+        }
+      });
+    });
   });
 
   it('formatImages', () => {
