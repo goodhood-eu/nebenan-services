@@ -13,6 +13,9 @@ export const configureContentful = (options) => {
   proxyUrl = options.url;
 };
 
+/**
+ * @deprecated use #getContentfulRequestPromise instead
+ */
 export const getContentfulRequest = (type, contentQuery) => {
   const { id, token, preview_token } = space;
   const access_token = preview ? preview_token : token;
