@@ -46,7 +46,7 @@ const hasValidationErrors = (payload) => payload?.errors;
 
 export const createContentfulRequest = async(type, contentQuery) => {
   const payload = await createRequest(getContentfulRequest(type, contentQuery));
-  if (hasValidationErrors(payload)) throw new Error('Contentful request contains validation errors');
+  if (hasValidationErrors(payload)) throw new Error(`Contentful request '${type}' contains validation errors`);
 
   return payload;
 };
