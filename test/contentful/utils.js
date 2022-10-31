@@ -89,7 +89,7 @@ describe('modules/contentful/utils', () => {
         try {
           await createContentfulRequest('test');
         } catch (error) {
-          assert.equal(error.message, 'Contentful request contains validation errors');
+          assert.equal(error.message, "Contentful request 'test' contains validation errors");
         }
       });
     });
