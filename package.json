@@ -7,7 +7,7 @@
   "homepage": "https://nebenan.de/",
   "repository": "good-hood-gmbh/nebenan-services",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-services/issues",
-  "version": "6.0.2",
+  "version": "6.1.0",
   "files": [
     "lib/*.js",
     "lib/*/*.js"
@@ -21,36 +21,36 @@
     "lint": "eslint ./",
     "lint:tofile": "eslint --no-color -o ./eslint-report.log ./",
     "test": "npm run build && TZ='GMT' mocha \"test/**/*.js\"",
-    "test:tofile": "npm run build && TZ='GMT' mocha --no-colors -R spec \"test/**/*.js\" 2>&1 | tee test-report.log"
+    "test:tofile": "npm run build && TZ='GMT' mocha --no-colors -R spec \"test/**/*.js\" 2>&1 | tee test-report.log",
+    "yalc": "npm i && npm run build && yalc push"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.0",
-    "@babel/core": "^7.12.3",
-    "@babel/plugin-proposal-json-strings": "^7.12.1",
-    "@babel/plugin-transform-runtime": "^7.12.1",
-    "@babel/plugin-transform-strict-mode": "^7.12.1",
-    "@babel/preset-env": "^7.12.1",
-    "@babel/runtime": "^7.12.5",
-    "axios": "^0.21.0",
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.19.3",
+    "@babel/plugin-proposal-json-strings": "^7.18.6",
+    "@babel/plugin-transform-runtime": "^7.19.1",
+    "@babel/plugin-transform-strict-mode": "^7.18.6",
+    "@babel/preset-env": "^7.19.4",
     "babel-plugin-add-module-exports": "^1.0.4",
     "browserslist-config-nebenan": "^1.0.0",
-    "chai": "^4.2.0",
-    "eslint": "^7.13.0",
-    "eslint-config-nebenan-base": "^1.3.1",
-    "lodash": "^4.17.15",
-    "mocha": "^9.2.0",
+    "chai": "^4.3.6",
+    "eslint": "^8.25.0",
+    "eslint-config-nebenan-base": "^2.0.1",
+    "lodash": "^4.17.21",
+    "mocha": "^9.2.2",
     "nebenan-eventproxy": "^1.0.0",
-    "nebenan-redux-tools": "^6.0.0",
-    "react": "^17.0.1",
-    "sinon": "^10.0.0"
+    "react": "^17.0.2",
+    "react-redux": "^7.2.9",
+    "react-dom": "^17.0.2",
+    "sinon": "^10.0.1"
   },
   "dependencies": {
     "history": "^4.10.1",
-    "lodash": "^4.17.15",
-    "nebenan-helpers": "^7.0.0",
+    "lodash": "^4.17.21",
+    "nebenan-helpers": "^7.1.0",
     "nebenan-react-hocs": "^9.0.0",
-    "normalizr": "^3.6.1",
-    "qs": "^6.7.0"
+    "normalizr": "^3.6.2",
+    "qs": "^6.11.0"
   },
   "peerDependencies": {
     "@babel/runtime": "^7.x.x",

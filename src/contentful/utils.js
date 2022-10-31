@@ -1,17 +1,23 @@
 import { stringify } from 'qs';
+import { createRequest as _createRequest } from 'nebenan-redux-tools/lib/network';
 
 let space;
 let language;
 let preview = false;
 let proxyUrl;
+let createRequest;
 
 export const configureContentful = (options) => {
   space = options.space;
   language = options.language;
   preview = options.preview;
   proxyUrl = options.url;
+  createRequest = options.createRequest || _createRequest;
 };
 
+/**
+ * @deprecated use #createContentfulRequest instead
+ */
 export const getContentfulRequest = (type, contentQuery) => {
   const { id, token, preview_token } = space;
   const access_token = preview ? preview_token : token;
@@ -36,10 +42,22 @@ export const getContentfulRequest = (type, contentQuery) => {
   };
 };
 
+const hasValidationErrors = (payload) => payload?.errors;
+
+export const createContentfulRequest = async(type, contentQuery) => {
+  const payload = await createRequest(getContentfulRequest(type, contentQuery));
+  if (hasValidationErrors(payload)) throw new Error(`Contentful request '${type}' contains validation errors`);
+
+  return payload;
+};
+
 export const formatImage = (image, assets) => {
   const ref = assets[image.sys.id];
-  if (!ref) return null;
-  return `https:${ref.fields.file.url}`;
+  // optional chaining saves page crash when contentful content in staging spaces is missing
+  const url = ref?.fields?.file?.url;
+  if (!url) return null;
+
+  return `https:${url}`;
 };
 
 export const formatImages = (list, assets) => (
