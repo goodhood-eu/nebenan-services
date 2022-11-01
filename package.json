@@ -36,25 +36,23 @@
     "chai": "^4.3.6",
     "eslint": "^8.25.0",
     "eslint-config-nebenan-base": "^2.0.1",
-    "lodash": "^4.17.21",
     "mocha": "^9.2.2",
-    "nebenan-eventproxy": "^1.0.0",
-    "react": "^17.0.2",
-    "react-redux": "^7.2.9",
-    "react-dom": "^17.0.2",
     "sinon": "^10.0.1"
   },
   "dependencies": {
     "history": "^4.10.1",
     "lodash": "^4.17.21",
+    "nebenan-eventproxy": "^1.0.0",
     "nebenan-helpers": "^7.1.0",
     "nebenan-react-hocs": "^9.0.0",
+    "nebenan-redux-tools": "^6.0.0",
     "normalizr": "^3.6.2",
-    "qs": "^6.11.0"
+    "qs": "^6.11.0",
+    "react": "^17.0.2",
+    "react-redux": "^7.2.9",
+    "react-dom": "^17.0.2"
   },
   "peerDependencies": {
-    "@babel/runtime": "^7.x.x",
-    "nebenan-eventproxy": "^1.0.0",
-    "nebenan-redux-tools": "^6.0.0"
+    "@babel/runtime": "^7.x.x"
   }
 }
