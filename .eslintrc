@@ -1,3 +1,50 @@
 {
-  "extends": ["nebenan-base"]
+  "extends": "nebenan",
+  "overrides": [
+    {
+      "files": [
+        "**/*.test.ts"
+      ],
+      "env": {
+        "mocha": true
+      },
+      "rules": {
+        "no-unused-expressions": "off"
+      },
+      "extends": [
+        "nebenan/typescript"
+      ],
+      "parserOptions": {
+        "project": [
+          "./tsconfig.eslint.json"
+        ]
+      }
+    },
+    {
+      "files": [
+        "**/*.ts",
+        "**/*.tsx"
+      ],
+      "excludedFiles": [
+        "**/*.test.ts"
+      ],
+      "extends": [
+        "nebenan/typescript"
+      ],
+      "parserOptions": {
+        "project": [
+          "./tsconfig.json"
+        ]
+      },
+      "rules": {
+        "@typescript-eslint/naming-convention": [
+          "warn",
+          {
+            "selector": "variable",
+            "format": ["camelCase", "snake_case"]
+          }
+        ]
+      }
+    }
+  ]
 }

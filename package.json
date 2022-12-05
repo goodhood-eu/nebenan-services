@@ -12,16 +12,20 @@
     "lib/*.js",
     "lib/*/*.js"
   ],
+  "module": "lib/index.js",
+  "main": "lib/index.cjs",
+  "types": "lib/types",
   "scripts": {
     "reinstall": "rm -rf node_modules package-lock.json && npm install",
-    "check": "npm test && npm run lint && echo \"\\033[0;32mReady to publish\\033[0m\"",
+    "check": "npm test && npm run lint && npm run lint:typescript && echo \"\\033[0;32mReady to publish\\033[0m\"",
     "clean": "rm -rf ./lib/ || exit 1",
-    "build": "NODE_ENV=production babel src --out-dir lib --copy-files",
+    "build": "NODE_ENV=production rollup -c",
     "prepublishOnly": "npm run check && npm run clean && npm run build",
     "lint": "eslint ./",
     "lint:tofile": "eslint --no-color -o ./eslint-report.log ./",
-    "test": "npm run build && TZ='GMT' mocha \"test/**/*.js\"",
-    "test:tofile": "npm run build && TZ='GMT' mocha --no-colors -R spec \"test/**/*.js\" 2>&1 | tee test-report.log",
+    "lint:typescript": "tsc --noEmit",
+    "test": "TZ='GMT' mocha",
+    "test:tofile": "TZ='GMT' mocha --no-colors -R spec \"test/**/*.js\" 2>&1 | tee test-report.log",
     "yalc": "npm i && npm run build && yalc push"
   },
   "devDependencies": {
@@ -31,13 +35,25 @@
     "@babel/plugin-transform-runtime": "^7.19.1",
     "@babel/plugin-transform-strict-mode": "^7.18.6",
     "@babel/preset-env": "^7.19.4",
+    "@babel/preset-typescript": "^7.18.6",
+    "@babel/register": "^7.18.9",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-commonjs": "^23.0.3",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.11.10",
+    "@types/qs": "^6.9.7",
     "babel-plugin-add-module-exports": "^1.0.4",
     "browserslist-config-nebenan": "^1.0.0",
     "chai": "^4.3.6",
-    "eslint": "^8.25.0",
-    "eslint-config-nebenan-base": "^2.0.1",
-    "mocha": "^9.2.2",
-    "sinon": "^10.0.1"
+    "eslint": "^8.26.0",
+    "eslint-config-nebenan": "^4.3.0",
+    "mocha": "^10.1.0",
+    "rollup": "^3.5.1",
+    "rollup-plugin-typescript2": "^0.34.1",
+    "sinon": "^10.0.1",
+    "typescript": "^4.9.3"
   },
   "dependencies": {
     "history": "^4.10.1",
@@ -49,8 +65,8 @@
     "normalizr": "^3.6.2",
     "qs": "^6.11.0",
     "react": "^17.0.2",
-    "react-redux": "^7.2.9",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.9"
   },
   "peerDependencies": {
     "@babel/runtime": "^7.x.x"

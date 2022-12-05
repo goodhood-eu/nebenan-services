@@ -1,13 +1,22 @@
 import { stringify } from 'qs';
 import { createRequest as _createRequest } from 'nebenan-redux-tools/lib/network';
+import { TContentfulSpace } from './types';
 
-let space;
-let language;
+export type TContentfulOptions = {
+  space: TContentfulSpace;
+  language: string;
+  preview: boolean;
+  url: string;
+  createRequest: Record<string, unknown>;
+};
+
+let space: TContentfulSpace | undefined;
+let language: string | undefined;
 let preview = false;
-let proxyUrl;
+let proxyUrl: string | undefined;
 let createRequest;
 
-export const configureContentful = (options) => {
+export const configureContentful = (options: TContentfulOptions): void => {
   space = options.space;
   language = options.language;
   preview = options.preview;
@@ -19,6 +28,7 @@ export const configureContentful = (options) => {
  * @deprecated use #createContentfulRequest instead
  */
 export const getContentfulRequest = (type, contentQuery) => {
+  if (!space) return;
   const { id, token, preview_token } = space;
   const access_token = preview ? preview_token : token;
   const content_type = space[`content_type_${type}`];
@@ -44,7 +54,7 @@ export const getContentfulRequest = (type, contentQuery) => {
 
 const hasValidationErrors = (payload) => payload?.errors;
 
-export const createContentfulRequest = async(type, contentQuery) => {
+export const createContentfulRequest = async (type, contentQuery) => {
   const payload = await createRequest(getContentfulRequest(type, contentQuery));
   if (hasValidationErrors(payload)) throw new Error(`Contentful request '${type}' contains validation errors`);
 

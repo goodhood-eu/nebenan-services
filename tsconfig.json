@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "esnext",
+    "allowJs": true,
+    "sourceMap": true,
+    "removeComments": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedParameters": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationDir": "lib/types",
+    "declarationMap": true,
+    "outDir": "lib",
+    "paths": {
+      "@/*": ["./*"],
+    }
+  },
+  "include": ["src/**/*", "index.d.ts"],
+  "exclude": [
+    "**/node_modules",
+    "**/.*/",
+    "**/lib",
+    "src/**/*.test.ts"
+  ]
+}

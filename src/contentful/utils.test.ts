@@ -1,11 +1,12 @@
-const { assert } = require('chai');
+import { assert } from 'chai';
 
 const {
   configureContentful,
   formatImages,
   getContentfulRequest,
-  formatImage, createContentfulRequest,
-} = require('../../lib/contentful/utils');
+  formatImage,
+  createContentfulRequest,
+} from './utils';
 
 const data = require('./scaffolding');
 
@@ -47,7 +48,7 @@ describe('modules/contentful/utils', () => {
 
   describe('createContentfulRequest', () => {
     context('valid contentful response', () => {
-      it('resolves returned promise', async() => {
+      it('resolves returned promise', async () => {
         configureContentful({
           space: SPACE,
           language: LANGUAGE,
@@ -61,7 +62,7 @@ describe('modules/contentful/utils', () => {
     });
 
     context('network error', () => {
-      it('rejects returned promise', async() => {
+      it('rejects returned promise', async () => {
         configureContentful({
           space: SPACE,
           language: LANGUAGE,
@@ -78,7 +79,7 @@ describe('modules/contentful/utils', () => {
     });
 
     context('contentful response with validation errors', () => {
-      it('rejects returned promise', async() => {
+      it('rejects returned promise', async () => {
         configureContentful({
           space: SPACE,
           language: LANGUAGE,

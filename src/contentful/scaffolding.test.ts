@@ -1,4 +1,6 @@
-const data = {};
+import { TScaffoldingData } from './types';
+
+const data: TScaffoldingData = {};
 
 data.images_list = [
   {
@@ -1216,4 +1218,4 @@ data.validResponse = {
   },
 };
 
-module.exports = data;
+export default data;
