@@ -1,46 +1,68 @@
-export type TNebenanLocales = 'de-DE' | 'de' | 'en-US' | 'en' | 'fr-FR' | 'fr' | 'es-ES' | 'es' | 'it-IT' | 'it';
+export type NebenanLocales = 'de-DE' | 'de' | 'en-US' | 'en' | 'fr-FR' | 'fr' | 'es-ES' | 'es' | 'it-IT' | 'it';
 
-export type TContentfulSpaceDefaults = {
+export type ContentfulSpaceDefaults = {
   id: string;
   token: string;
   preview_token: string;
 };
 
-export type TContentfulSpace<T extends string | void = void> = T extends void
-  ? TContentfulSpaceDefaults
-  : TContentfulSpaceDefaults & Partial<{
-    [key: `content_type_${T}` | string]: string;
-  }>;
+export type ContentfulSpace<T extends string | undefined = undefined> = T extends string
+  ? ContentfulSpaceDefaults & Record<`content_type_${T}`, string>
+  : ContentfulSpaceDefaults;
 
-export type TContentfulSysAttributes = {
+export type ContentfulRequestQuery = {
+  preview?: boolean,
+  query_string: string,
+};
+
+export type GetQueryRequestReturnValue = undefined | {
+  query: ContentfulRequestQuery,
+  url?: string,
+  graceful: true,
+};
+
+export type ContentfulSysAttributes = {
   id: string,
   type: string,
 };
 
-export type TContentfulEntity = {
-  sys: TContentfulSysAttributes & {
+export type ContentfulEntity = {
+  sys: ContentfulSysAttributes & {
     linkType?: string,
   }
 };
 
-export type TContentfulAssetObject = {
+export type ContentfulAssetObject = {
   metadata?: {
     tags: string[],
   },
   sys: {
-    space: TContentfulEntity,
+    space: ContentfulEntity,
     id: string;
     type: string;
     createdAt: string;
     updatedAt: string;
     revision: number;
-    locale: TNebenanLocales;
-    environment?: TContentfulEntity
+    locale: NebenanLocales;
+    environment?: ContentfulEntity
   },
-  fields: Record<string, unknown>
+  fields: Record<string, unknown> & {
+    file?: {
+      url: string;
+      details: {
+        size: number;
+        image: {
+          width: number;
+          height: number;
+        },
+      },
+      fileName: string;
+      contentType: string;
+    }
+  }
 };
 
-export type TContentfuleResponseObject = {
+export type ContentfulResponseObject = {
   sys: {
     type: string
   },
@@ -51,19 +73,19 @@ export type TContentfuleResponseObject = {
     metadata: {
       tags: string[],
     },
-    sys: TContentfulSysAttributes & {
-      space: TContentfulEntity,
-      contentType: TContentfulEntity,
+    sys: ContentfulSysAttributes & {
+      space: ContentfulEntity,
+      contentType: ContentfulEntity,
       revision: number;
       createdAt: string;
       updatedAt: string;
-      environment: TContentfulEntity,
-      locale: TNebenanLocales;
+      environment: ContentfulEntity,
+      locale: NebenanLocales;
     },
     fields: Record<string, unknown>
   }[],
   errors?: {
-    sys: TContentfulSysAttributes,
+    sys: ContentfulSysAttributes,
     details: {
       type: string,
       linkType: string,
@@ -71,13 +93,13 @@ export type TContentfuleResponseObject = {
     }
   }[],
   includes: {
-    Asset: TContentfulAssetObject[]
+    Asset: ContentfulAssetObject[]
   }
 };
 
-export type TScaffoldingData = {
-  images_list?: TContentfulEntity[];
-  assets?: Record<string, TContentfulAssetObject>;
-  responseWithErrors?: TContentfuleResponseObject;
-  validResponse?: TContentfuleResponseObject;
+export type ScaffoldingData = {
+  images_list?: ContentfulEntity[];
+  assets?: Record<string, ContentfulAssetObject>;
+  responseWithErrors?: ContentfulResponseObject;
+  validResponse?: ContentfulResponseObject;
 };

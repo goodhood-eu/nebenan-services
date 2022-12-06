@@ -1,6 +1,6 @@
-import { TScaffoldingData } from './types';
+import { ScaffoldingData } from './types';
 
-const data: TScaffoldingData = {};
+const data: ScaffoldingData = {};
 
 data.images_list = [
   {

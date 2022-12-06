@@ -1,8 +1,8 @@
 import { schema } from 'normalizr';
-import { TContentfulEntity } from './types';
+import { ContentfulEntity } from './types';
 
 export const getSchemaOptions = (overrides?: Record<string, unknown>) => ({
-  idAttribute: (entity: TContentfulEntity) => (entity.sys.id),
+  idAttribute: (entity: ContentfulEntity) => (entity.sys.id),
   ...overrides,
 });
 
