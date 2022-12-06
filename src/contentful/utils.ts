@@ -13,14 +13,14 @@ export type TContentfulOptions = {
   language: string;
   preview: boolean;
   url: string;
-  createRequest: Record<string, unknown>;
+  createRequest: typeof _createRequest;
 };
 
 let space: ContentfulSpace | undefined;
 let language: string | undefined;
 let preview = false;
 let proxyUrl: string | undefined;
-let createRequest;
+let createRequest: typeof _createRequest;
 
 export const configureContentful = (options: TContentfulOptions): void => {
   space = options.space;
@@ -63,7 +63,10 @@ export const getContentfulRequest = (
 
 const hasValidationErrors = (payload?: Record<string, unknown>) => payload?.errors;
 
-export const createContentfulRequest = async (type: string, contentQuery: Record<string, unknown>) => {
+export const createContentfulRequest = async (
+  type: string,
+  contentQuery: Record<string, unknown>,
+) => {
   const payload = await createRequest(getContentfulRequest(type, contentQuery));
   if (hasValidationErrors(payload)) throw new Error(`Contentful request '${type}' contains validation errors`);
 
