@@ -1,14 +1,13 @@
 import { assert } from 'chai';
-
-const {
+import { ErrorPayload, ScaffoldingData } from './types';
+import {
   configureContentful,
   formatImages,
   getContentfulRequest,
   formatImage,
   createContentfulRequest,
 } from './utils';
-
-const data = require('./scaffolding');
+import data from './scaffolding.test';
 
 const SPACE = {
   id: 1,
@@ -22,6 +21,7 @@ describe('modules/contentful/utils', () => {
   beforeEach(() => {
     configureContentful({
       space: SPACE,
+      preview: false,
       language: LANGUAGE,
       url: '/v2/contentfull_proxy.json',
     });
@@ -31,16 +31,16 @@ describe('modules/contentful/utils', () => {
     const testResult = getContentfulRequest('test');
 
     assert.isObject(testResult, 'returns correct data format');
-    assert.isString(testResult.url, 'sets default url');
+    assert.isString(testResult?.url, 'sets default url');
 
-    const spaceUrl = getContentfulRequest('test').query.query_string;
+    const spaceUrl = getContentfulRequest('test')?.query?.query_string;
 
-    assert.isTrue(/^\/spaces\/1\/entries/.test(spaceUrl), 'generate space entries route');
+    assert.isTrue(/^\/spaces\/1\/entries/.test(spaceUrl as string), 'generate space entries route');
     assert.include(spaceUrl, 'access_token=token', 'token is included');
     assert.include(spaceUrl, 'content_type=secret', 'content type is included');
     assert.include(spaceUrl, `localization=${LANGUAGE}`, 'locale is included');
 
-    const spaceUrlWithQuery = getContentfulRequest('test', { a: 5, b: 'bulbul' }).query.query_string;
+    const spaceUrlWithQuery = getContentfulRequest('test', { a: 5, b: 'bulbul' })?.query?.query_string;
 
     assert.include(spaceUrlWithQuery, 'a=5', 'include query params');
     assert.include(spaceUrlWithQuery, 'b=bulbul', 'include query params');
@@ -50,6 +50,7 @@ describe('modules/contentful/utils', () => {
     context('valid contentful response', () => {
       it('resolves returned promise', async () => {
         configureContentful({
+          preview: false,
           space: SPACE,
           language: LANGUAGE,
           url: '/v2/contentfull_proxy.json',
@@ -57,6 +58,9 @@ describe('modules/contentful/utils', () => {
         });
 
         const payload = await createContentfulRequest('test');
+        // TODO: Figure out what is wrong with this one
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         assert.deepEqual(payload, data.validResponse);
       });
     });
@@ -64,6 +68,7 @@ describe('modules/contentful/utils', () => {
     context('network error', () => {
       it('rejects returned promise', async () => {
         configureContentful({
+          preview: false,
           space: SPACE,
           language: LANGUAGE,
           url: '/v2/contentfull_proxy.json',
@@ -73,7 +78,7 @@ describe('modules/contentful/utils', () => {
         try {
           await createContentfulRequest('test');
         } catch (error) {
-          assert.equal(error.statusCode, 500);
+          assert.equal((error as ErrorPayload).statusCode, 500);
         }
       });
     });
@@ -81,33 +86,37 @@ describe('modules/contentful/utils', () => {
     context('contentful response with validation errors', () => {
       it('rejects returned promise', async () => {
         configureContentful({
+          preview: false,
           space: SPACE,
           language: LANGUAGE,
           url: '/v2/contentfull_proxy.json',
-          createRequest: () => Promise.resolve(data.responseWithErrors),
+          createRequest: () => Promise.resolve((data as ScaffoldingData).responseWithErrors),
         });
 
         try {
           await createContentfulRequest('test');
         } catch (error) {
-          assert.equal(error.message, "Contentful request 'test' contains validation errors");
+          assert.equal((error as ErrorPayload).message, "Contentful request 'test' contains validation errors");
         }
       });
     });
   });
 
   it('formatImages', () => {
-    const result = formatImages(data.images_list, data.assets);
+    const result = formatImages(
+      (data as ScaffoldingData).images_list,
+      (data as ScaffoldingData).assets,
+    );
 
     assert.isArray(result, 'correct data type');
-    assert.equal(result.length, data.images_list.length, 'correct number of images');
+    assert.equal(result.length, (data as ScaffoldingData).images_list.length, 'correct number of images');
     assert.isString(result[0].url, 'correct data format');
   });
 
   it('formatImage', () => {
-    const image = data.images_list[0];
+    const image = (data as ScaffoldingData).images_list[0];
 
     assert.isNull(formatImage(image, {}), 'doesn\'t crash when contentful fucks up images');
-    assert.include(formatImage(image, data.assets), 'https://', 'correct image url');
+    assert.include(formatImage(image, (data as ScaffoldingData).assets), 'https://', 'correct image url');
   });
 });

@@ -5,15 +5,15 @@ import {
   GetQueryRequestReturnValue,
   ContentfulAssetObject,
   ContentfulEntity,
-  ContentfulSpace,
+  ContentfulSpace, FormattedImage,
 } from './types';
 
-export type TContentfulOptions = {
+export type ContentfulOptions = {
   space: ContentfulSpace;
   language: string;
   preview: boolean;
   url: string;
-  createRequest: typeof _createRequest;
+  createRequest?: typeof _createRequest;
 };
 
 let space: ContentfulSpace | undefined;
@@ -22,7 +22,7 @@ let preview = false;
 let proxyUrl: string | undefined;
 let createRequest: typeof _createRequest;
 
-export const configureContentful = (options: TContentfulOptions): void => {
+export const configureContentful = (options: ContentfulOptions): void => {
   space = options.space;
   language = options.language;
   preview = options.preview;
@@ -35,7 +35,7 @@ export const configureContentful = (options: TContentfulOptions): void => {
  */
 export const getContentfulRequest = (
   type: string,
-  contentQuery: Record<string, unknown>,
+  contentQuery?: Record<string, unknown>,
 ): GetQueryRequestReturnValue => {
   if (!space) return;
   const { id, token, preview_token } = space;
@@ -61,12 +61,14 @@ export const getContentfulRequest = (
   };
 };
 
-const hasValidationErrors = (payload?: Record<string, unknown>) => payload?.errors;
+const hasValidationErrors = (
+  payload?: Record<string, unknown>,
+): boolean => Boolean(payload?.errors);
 
 export const createContentfulRequest = async (
   type: string,
-  contentQuery: Record<string, unknown>,
-) => {
+  contentQuery?: Record<string, unknown>,
+): Promise<GetQueryRequestReturnValue> => {
   const payload = await createRequest(getContentfulRequest(type, contentQuery));
   if (hasValidationErrors(payload)) throw new Error(`Contentful request '${type}' contains validation errors`);
 
@@ -88,11 +90,11 @@ export const formatImage = (
 export const formatImages = (
   list: ContentfulEntity[],
   assets: Record<string, ContentfulAssetObject>,
-): { id: string, url: string }[] => (
+): FormattedImage[] => (
   list.reduce((collection, item) => {
     const { id } = item.sys;
     const url = formatImage(item, assets);
     if (url) collection.push({ id, url });
     return collection;
-  }, [] as { id: string, url: string }[])
+  }, [] as FormattedImage[])
 );

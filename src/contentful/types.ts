@@ -1,9 +1,15 @@
 export type NebenanLocales = 'de-DE' | 'de' | 'en-US' | 'en' | 'fr-FR' | 'fr' | 'es-ES' | 'es' | 'it-IT' | 'it';
 
 export type ContentfulSpaceDefaults = {
-  id: string;
+  id: string | number;
   token: string;
-  preview_token: string;
+  preview_token?: string;
+};
+
+export type FormattedImage = { id: string, url: string };
+
+export type ErrorPayload = Error & {
+  statusCode?: number;
 };
 
 export type ContentfulSpace<T extends string | undefined = undefined> = T extends string
@@ -16,9 +22,9 @@ export type ContentfulRequestQuery = {
 };
 
 export type GetQueryRequestReturnValue = undefined | {
-  query: ContentfulRequestQuery,
+  query?: ContentfulRequestQuery,
   url?: string,
-  graceful: true,
+  graceful?: true,
 };
 
 export type ContentfulSysAttributes = {
@@ -98,8 +104,8 @@ export type ContentfulResponseObject = {
 };
 
 export type ScaffoldingData = {
-  images_list?: ContentfulEntity[];
-  assets?: Record<string, ContentfulAssetObject>;
-  responseWithErrors?: ContentfulResponseObject;
-  validResponse?: ContentfulResponseObject;
+  images_list: ContentfulEntity[];
+  assets: Record<string, ContentfulAssetObject>;
+  responseWithErrors: ContentfulResponseObject;
+  validResponse: ContentfulResponseObject;
 };
