@@ -2,6 +2,7 @@ import { babel } from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
+import json from '@rollup/plugin-json';
 
 export default [
   {
@@ -24,6 +25,7 @@ export default [
       babel({ babelHelpers: 'runtime', exclude: /^(.+\/)?node_modules\/.+$/ }),
       typescript({ useTsconfigDeclarationDir: true }),
       commonjs({ extensions: ['.js', '.ts'] }),
+      json(),
     ],
   },
 ];
