@@ -41,7 +41,7 @@
           "warn",
           {
             "selector": "variable",
-            "format": ["camelCase", "snake_case"]
+            "format": ["camelCase", "snake_case", "UPPER_CASE"]
           }
         ]
       }
