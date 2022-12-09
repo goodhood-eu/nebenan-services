@@ -1,12 +1,11 @@
-const { assert } = require('chai');
-const sinon = require('sinon');
-
-const {
+import { assert } from 'chai';
+import sinon from 'sinon';
+import {
   getQuery,
   getUtmKeys,
   isExpired,
   ensureCalled,
-} = require('../../lib/analytics/utils');
+} from './utils';
 
 describe('analytics/utils', () => {
   it('getQuery', () => {
@@ -36,9 +35,8 @@ describe('analytics/utils', () => {
     const fresh = Date.now();
     const limit = 1000;
 
-    let expired = new Date();
-    expired.setHours(expired.getHours() - 1);
-    expired -= limit;
+    const date = new Date();
+    const expired = date.setHours(date.getHours() - 1) - limit;
 
     assert.isTrue(isExpired(expired, limit), 'expire when lifetime is over');
     assert.isFalse(isExpired(fresh, limit), 'just created');
