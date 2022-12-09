@@ -5,12 +5,17 @@ import eventproxy from 'nebenan-eventproxy';
 
 export type TID = NodeJS.Timeout | null;
 export type Key = string | null;
+export type StartProcessingReturn = () => void;
+export type ScrollManagerReturn = {
+  stateHistory: Record<string, (number | string | undefined)>;
+  startProcessing: () => void;
+};
 
 const ATTEMPTS_RATE = 300;
 const PROXIMITY = 100;
 const MAX_ATTEMPTS = 10;
 
-export default (history: History, node: Window) => {
+export default (history: History, node: Window): ScrollManagerReturn => {
   const stateHistory: Record<string, (number | string | undefined)> = {};
   const nodeScroll = scroll(node);
 
@@ -60,7 +65,7 @@ export default (history: History, node: Window) => {
     ensurePosition(stateHistory[key] as number | undefined);
   };
 
-  const startProcessing = () => {
+  const startProcessing = (): StartProcessingReturn => {
     // Attempts to store current scroll position
     const unsubscribeScroll = eventproxy('scroll', save);
     const unsubscribeHook = history.listen(restore as unknown as Listener);

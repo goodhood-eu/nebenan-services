@@ -1,5 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 
+import { History, Listener } from 'history';
 import { getDoNotTrack, ensureCalled } from './utils';
 import {
   removeExpiredUtm,
@@ -8,25 +9,26 @@ import {
   generateEnvironment,
   trackPageView,
 } from './tracking';
+import { StoreObject, TrackFunction } from './types';
 
 
-let dataCollector = [];
+let dataCollector: unknown[] = [];
 let forceDisable = false;
 let gtmLoaded = false;
 
-const setDataCollector = (collector) => {
+const setDataCollector = (collector: unknown[]) => {
   dataCollector.forEach((item) => collector.push(item));
   dataCollector = collector;
 };
 
-const isDisabled = () => (
-  !gtmLoaded || forceDisable || getDoNotTrack(global)
+const isDisabled = (): boolean => (
+  !gtmLoaded || forceDisable || getDoNotTrack(global as unknown as Window)
 );
 
-export const setGTMLoaded = (value) => { gtmLoaded = value; };
-export const setDisabled = (value) => { forceDisable = value; };
+export const setGTMLoaded = (value: boolean): void => { gtmLoaded = value; };
+export const setDisabled = (value: boolean): void => { forceDisable = value; };
 
-export const track = (payload, done) => {
+export const track: TrackFunction = (payload, done) => {
   if (isEmpty(payload)) throw new Error('Tracking payload required');
   if (isDisabled()) {
     if (done) done();
@@ -38,7 +40,7 @@ export const track = (payload, done) => {
   dataCollector.push(payloadOverride || payload);
 };
 
-const DEFAULT_GET_PAGEVIEW_PAYLOAD = () => {};
+const DEFAULT_GET_PAGEVIEW_PAYLOAD = (): void => {};
 
 /**
  * Callback for providing additional data to the page-view event.
@@ -59,24 +61,24 @@ const DEFAULT_GET_PAGEVIEW_PAYLOAD = () => {};
  * @returns {{startTracking: (function(): function(): void)}}
  */
 export const createAnalytics = (
-  store,
-  history,
-  collector,
+  store: StoreObject,
+  history: History,
+  collector: unknown[],
   {
     getPageviewPayload = DEFAULT_GET_PAGEVIEW_PAYLOAD,
   } = {},
 ) => {
   const state = store.getState();
-  let currentPage = null;
+  let currentPage: Location | null = null;
 
-  const handlePageview = (newPage) => {
-    trackPageView(track, store, currentPage, newPage, getPageviewPayload);
+  const handlePageview = (newPage: Location): void => {
+    trackPageView(track, store, (currentPage as Location), newPage, getPageviewPayload);
     currentPage = newPage;
   };
 
   const startTracking = () => {
-    const unsubscribeHistory = history.listen(handlePageview);
-    handlePageview(history.location);
+    const unsubscribeHistory = history.listen(handlePageview as unknown as Listener);
+    handlePageview(history.location as unknown as Location);
 
     return (() => {
       unsubscribeHistory();

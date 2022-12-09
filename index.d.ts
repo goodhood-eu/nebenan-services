@@ -20,3 +20,13 @@ declare module 'nebenan-eventproxy' {
     callback: (args: unknown) => unknown) => () => void;
   export default eventproxy;
 }
+
+declare module 'nebenan-redux-tools/lib/session' {
+  export const actions: {
+    setSession: (data: Record<string, unknown>) => void;
+  };
+}
+
+declare module 'nebenan-helpers/lib/calculations' {
+  export const getUID: () => string;
+}
