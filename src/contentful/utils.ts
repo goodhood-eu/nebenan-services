@@ -63,7 +63,7 @@ export const getContentfulRequest = (
 
 const hasValidationErrors = (
   payload?: Record<string, unknown>,
-): boolean => Boolean(payload?.errors);
+) => Boolean(payload?.errors);
 
 export const createContentfulRequest = async (
   type: string,

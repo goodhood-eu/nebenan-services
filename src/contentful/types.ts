@@ -1,5 +1,3 @@
-export type NebenanLocales = 'de-DE' | 'de' | 'en-US' | 'en' | 'fr-FR' | 'fr' | 'es-ES' | 'es' | 'it-IT' | 'it';
-
 export type ContentfulSpaceDefaults = {
   id: string | number;
   token: string;
@@ -49,7 +47,7 @@ export type ContentfulAssetObject = {
     createdAt: string;
     updatedAt: string;
     revision: number;
-    locale: NebenanLocales;
+    locale: string;
     environment?: ContentfulEntity
   },
   fields: Record<string, unknown> & {
@@ -86,7 +84,7 @@ export type ContentfulResponseObject = {
       createdAt: string;
       updatedAt: string;
       environment: ContentfulEntity,
-      locale: NebenanLocales;
+      locale: string;
     },
     fields: Record<string, unknown>
   }[],

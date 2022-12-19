@@ -7,10 +7,9 @@
   "homepage": "https://nebenan.de/",
   "repository": "good-hood-gmbh/nebenan-services",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-services/issues",
-  "version": "6.1.0",
+  "version": "6.1.1",
   "files": [
-    "lib/*.js",
-    "lib/*/*.js"
+    "lib"
   ],
   "module": "lib/index.js",
   "main": "lib/index.cjs",
