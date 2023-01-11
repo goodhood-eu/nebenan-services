@@ -1,28 +1,29 @@
 import { parse, ParsedQs } from 'qs';
+import { Location } from 'history';
 
-export type DoNotTrackProps = Window & {
-  doNotTrack?: boolean,
-  navigator?: {
-    msDoNotTrack?: boolean,
-  }
+type MsNavigator = Navigator & {
+  msDoNotTrack: Navigator['doNotTrack'],
 };
 
+const isMsNavigator = (navigator: Navigator): navigator is MsNavigator => (
+  typeof (navigator as MsNavigator).msDoNotTrack !== 'undefined'
+);
+
+
 const UTM_REGEX = /^utm_/;
-const DNT_POSITIVES = ['yes', '1', 1];
+const TRUTHY_DO_NOT_TRACK_VALUES = ['yes', '1', 1];
 
 export const getQuery = (search: string): ParsedQs => parse(search.substr(1));
 
-export const getDoNotTrack = (node: DoNotTrackProps): boolean => {
+export const getDoNotTrack = (node: Window): boolean => {
   let value;
   if (typeof node.navigator.doNotTrack !== 'undefined') {
     value = node.navigator.doNotTrack;
-  } else if (typeof node.navigator.msDoNotTrack !== 'undefined') {
+  } else if (isMsNavigator(node.navigator)) {
     value = node.navigator.msDoNotTrack;
-  } else {
-    value = node.doNotTrack;
   }
 
-  return DNT_POSITIVES.includes(value as string);
+  return TRUTHY_DO_NOT_TRACK_VALUES.includes(value as string);
 };
 
 export const isExpired = (timestamp: number, limit: number): boolean => (
@@ -39,7 +40,7 @@ export const getUtmKeys = (
 );
 
 export const ensureCalled = (
-  func: (data?: unknown) => unknown, timeout = 500,
+  func: (data?: unknown) => void, timeout = 500,
 ): (() => void) => {
   let isCalled = false;
   let timerId: NodeJS.Timeout | null = null;

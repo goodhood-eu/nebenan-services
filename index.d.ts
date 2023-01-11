@@ -70,8 +70,12 @@ declare module 'nebenan-eventproxy' {
 }
 
 declare module 'nebenan-redux-tools/lib/session' {
+  // eslint-disable-next-line import/no-extraneous-dependencies
+  import { Action, Reducer } from 'redux';
+
+  export const reducer: Reducer;
   export const actions: {
-    setSession: (data: Record<string, unknown>) => void;
+    setSession: (payload: Record<string, unknown>) => Action;
   };
 }
 

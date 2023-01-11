@@ -1,12 +1,9 @@
+import type { Store } from 'redux';
+import { Location } from 'history';
 import { CLIENT_ID_KEY, SESSION_ID_KEY, UTM_KEY } from './actions';
 
-export type ConfigureAnalyticsOptions = {
-  environment: string;
-  sessionLifetime: number;
-  utmLifetime: number;
-};
-export type TrackFunction = (payload: Record<string, unknown>, done?:() => unknown) => void;
-export type SessionObject = {
+export type TrackFunction = (payload: Record<string, unknown>, done?: () => void) => void;
+export type State = {
   session: {
     [UTM_KEY]: {
       timestamp: number;
@@ -21,10 +18,7 @@ export type SessionObject = {
     }
   }
 };
-export type StoreObject = Record<string, unknown> & {
-  dispatch: (callback: unknown) => void;
-  getState: () => SessionObject
-};
+export type StoreObject = Store<State>;
 export type GetPayloadFunction = (data: {
   store: StoreObject,
   previousPage: Location,

@@ -8,12 +8,13 @@ export const SESSION_ID_KEY = 'analyticsSessionId';
 
 export const setUtm = (
   keys: Record<string, unknown>,
-): unknown => setSession({ [UTM_KEY]: { keys, timestamp: Date.now() } });
-export const deleteUtm = (): unknown => setSession({ [UTM_KEY]: undefined });
+) => setSession({ [UTM_KEY]: { keys, timestamp: Date.now() } });
+export const deleteUtm = () => setSession({ [UTM_KEY]: undefined });
 
-export const setClientId = (
-  id: string,
-): unknown => setSession({ [CLIENT_ID_KEY]: { id, timestamp: Date.now() } });
-export const setSessionId = (
-  id: string,
-): unknown => setSession({ [SESSION_ID_KEY]: { id, timestamp: Date.now() } });
+export const setClientId = (id: string) => (
+  setSession({ [CLIENT_ID_KEY]: { id, timestamp: Date.now() } })
+);
+
+export const setSessionId = (id: string) => (
+  setSession({ [SESSION_ID_KEY]: { id, timestamp: Date.now() } })
+);
