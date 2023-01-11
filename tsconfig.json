@@ -14,18 +14,16 @@
     "moduleResolution": "node",
     "skipLibCheck": true,
     "declaration": true,
+    "rootDir": "src/",
     "declarationDir": "lib/types",
     "declarationMap": true,
-    "outDir": "lib",
-    "paths": {
-      "@/*": ["./*"],
-    }
+    "outDir": "lib"
   },
   "include": ["src/**/*", "index.d.ts"],
   "exclude": [
     "**/node_modules",
     "**/.*/",
     "**/lib",
-    "src/**/*.test.ts"
+    "src/**/*.test.ts",
   ]
 }

@@ -1,75 +1,70 @@
-import { createPath, History, Listener, Location } from 'history';
+import { createPath, History, Update } from 'history';
 import { scroll } from 'nebenan-helpers/lib/dom';
 import eventproxy from 'nebenan-eventproxy';
 
-
-export type TID = NodeJS.Timeout | null;
-export type Key = string | null;
-export type StartProcessingReturn = () => void;
-export type ScrollManagerReturn = {
-  stateHistory: Record<string, (number | string | undefined)>;
-  startProcessing: () => void;
-};
+export type UnsubscribeCallback = () => void;
 
 const ATTEMPTS_RATE = 300;
 const PROXIMITY = 100;
 const MAX_ATTEMPTS = 10;
 
-export default (history: History, node: Window): ScrollManagerReturn => {
-  const stateHistory: Record<string, (number | string | undefined)> = {};
+const createScrollManager = (history: History, node: Window) => {
+  const positionDict: Record<string, number> = {};
   const nodeScroll = scroll(node);
 
-  let key: Key = null;
-  let tid: TID = null;
+  let locationKey: (keyof typeof positionDict) | null = null;
+  let timer: ReturnType<typeof setTimeout> | null = null;
 
-  const stopAutoScroll = (): void => {
-    if (tid) clearTimeout(tid);
-    node.document.removeEventListener('touchmove', stopAutoScroll, { passive: true } as EventListenerOptions);
-    node.document.removeEventListener('mousewheel', stopAutoScroll, { passive: true } as EventListenerOptions);
-    node.document.removeEventListener('wheel', stopAutoScroll, { passive: true } as EventListenerOptions);
+  const stopAutoScroll = () => {
+    if (timer) clearTimeout(timer);
+    node.document.removeEventListener('touchmove', stopAutoScroll);
+    node.document.removeEventListener('mousewheel', stopAutoScroll);
+    node.document.removeEventListener('wheel', stopAutoScroll);
   };
 
-  const ensurePosition = (targetPosition = 0): void => {
-    let iterations = 0;
+  const ensurePosition = (targetPosition = 0) => {
+    let attempts = 0;
     node.document.addEventListener('touchmove', stopAutoScroll, { passive: true });
     node.document.addEventListener('mousewheel', stopAutoScroll, { passive: true });
     node.document.addEventListener('wheel', stopAutoScroll, { passive: true });
 
     const scroller = () => {
-      iterations += 1;
+      attempts += 1;
       const currentPosition = nodeScroll.get();
 
       // allow for small deviations
       if (Math.abs(currentPosition - targetPosition) < PROXIMITY) return stopAutoScroll();
 
       // prevent from scrolling endlessly
-      if (iterations > MAX_ATTEMPTS) return stopAutoScroll();
+      if (attempts > MAX_ATTEMPTS) return stopAutoScroll();
 
       nodeScroll.to(targetPosition);
-      tid = setTimeout(scroller, ATTEMPTS_RATE);
+      timer = setTimeout(scroller, ATTEMPTS_RATE);
     };
 
-    if (tid) clearTimeout(tid);
+    if (timer) clearTimeout(timer);
     scroller();
   };
 
   const save = (): void => {
-    stateHistory[(key as string)] = nodeScroll.get();
+    if (!locationKey) return;
+
+    positionDict[locationKey] = nodeScroll.get();
   };
 
-  const restore = (location: Location): void => {
+  const restore = ({ location }: Update): void => {
     // update key for the next transition
-    key = createPath(location);
+    locationKey = createPath(location);
 
     // try and restore scroll position for this route, or reset to top
-    ensurePosition(stateHistory[key] as number | undefined);
+    ensurePosition(positionDict[locationKey]);
   };
 
-  const startProcessing = (): StartProcessingReturn => {
+  const startProcessing = (): UnsubscribeCallback => {
     // Attempts to store current scroll position
     const unsubscribeScroll = eventproxy('scroll', save);
-    const unsubscribeHook = history.listen(restore as unknown as Listener);
-    restore(history.location);
+    const unsubscribeHook = history.listen(restore);
+    restore(history);
 
     return () => {
       unsubscribeScroll();
@@ -77,5 +72,6 @@ export default (history: History, node: Window): ScrollManagerReturn => {
     };
   };
 
-  return { startProcessing, stateHistory };
+  return { startProcessing };
 };
+export default createScrollManager;

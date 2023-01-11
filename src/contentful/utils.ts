@@ -1,5 +1,5 @@
 import { stringify } from 'qs';
-import { createRequest as _createRequest } from 'nebenan-redux-tools/lib/network';
+import _createRequest from 'nebenan-redux-tools/lib/network/request';
 import {
   ContentfulRequestQuery,
   GetQueryRequestReturnValue,

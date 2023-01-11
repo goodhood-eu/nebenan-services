@@ -1,17 +1,65 @@
-declare module 'nebenan-redux-tools/lib/network' {
-  import { GetQueryRequestReturnValue } from './src/contentful/types';
+declare module 'nebenan-redux-tools/lib/network/request' {
+  // eslint-disable-next-line import/no-unresolved
+  import { Method } from 'axios';
 
-  export const createRequest: (data: GetQueryRequestReturnValue) => Record<string, unknown>;
-  export default { createRequest };
+  type SuccessResponse<T> = T & Record<string, unknown>;
+
+  export type NetworkError = {
+    statusCode: number,
+  };
+
+  type RequestResponse<T> = NetworkError | SuccessResponse<T>;
+
+  type RequestType =
+    | 'query'
+    | Method;
+
+  type RequestQuery = Record<string, unknown>;
+  type AbortCallback = (callback: () => void) => void;
+
+  type HasLast = { last: unknown };
+  type HasFirst = { first: unknown };
+
+  type PaginationOptions = {
+    per_page?: number,
+  } & (
+    | HasFirst
+    | HasLast
+    | (HasFirst & HasLast)
+  );
+
+  type RequestOptions<P> = {
+    url: string,
+    locale?: string,
+    type?: RequestType,
+    query?: RequestQuery,
+    payload?: P,
+    signal?: AbortSignal,
+    getAbortCallback?: AbortCallback,
+    pagination?: PaginationOptions,
+    graceful?: boolean,
+    token?: string,
+    multipart?: boolean,
+  };
+
+
+  const request: <T extends Record<string, unknown>, P>(
+    options: RequestOptions<P>
+  ) => Promise<RequestResponse<T>>;
+
+  export default request;
 }
 
+
 declare module 'nebenan-helpers/lib/dom' {
-  export const scroll: (node: Window) => {
-    get: () => Window['pageYOffset'] | Window['scrollTop'] | 0;
-    to: (pos: number) => void;
-    lock: () => EventTarget['addEventListener'];
-    unlock: () => EventTarget['removeEventListener'];
-  };
+  interface Scroller {
+    get(): number,
+    to(position: number): void,
+    lock(): void,
+    unlock(): void,
+  }
+
+  export const scroll: (node: Window) => Scroller;
 }
 
 declare module 'nebenan-eventproxy' {
