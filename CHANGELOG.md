@@ -4,7 +4,7 @@
     - Now: `import { track } from 'nebenan-services'`
     - Before `import createScrollManager from 'nebenan-services/lib/scrollmanager'`
     - Now: `import { createScrollManager } from 'nebenan-services'`
-- **Breaking**: Removed `setAnalyticsDisabled` and introduced `setAnalyticsEnabled`
+- **Breaking**: Removed `setAnalyticsDisabled(isDisabled)` and introduced `setAnalyticsEnabled(isEnabled)`
 - **Breaking**: Removed `UTM_KEY` export in favor of `getUTMKeysFromSession(session)`
 - **Breaking**: `createScrollManager(History, Window)` does not return `stateHistory` anymore
 - Add typescript support
