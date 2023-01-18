@@ -43,11 +43,17 @@ declare module 'nebenan-redux-tools/lib/network/request' {
   };
 
 
-  const request: <T extends Record<string, unknown>, P>(
-    options: RequestOptions<P>
-  ) => Promise<RequestResponse<T>>;
+  const request: <Response extends Record<string, unknown>, Payload = unknown>(
+    options: RequestOptions<Payload>
+  ) => Promise<RequestResponse<Response>>;
 
   export default request;
+}
+
+declare module 'nebenan-redux-tools/lib/network/utils' {
+  import { NetworkError } from 'nebenan-redux-tools/lib/network/request';
+
+  export const isNetworkError = (error: unknown): error is NetworkError => boolean;
 }
 
 

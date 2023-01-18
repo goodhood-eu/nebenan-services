@@ -1,18 +1,17 @@
-export type ContentfulSpaceDefaults = {
+type ContentfulSpaceDefaults = {
   id: string | number;
   token: string;
   preview_token?: string;
 };
+// TODO: clean up exports
 
 export type FormattedImage = { id: string, url: string };
 
-export type ErrorPayload = Error & {
-  statusCode?: number;
-};
-
-export type ContentfulSpace<T extends string | undefined = undefined> = T extends string
-  ? ContentfulSpaceDefaults & Record<`content_type_${T}`, string>
-  : ContentfulSpaceDefaults;
+export type ContentfulSpace = (
+  ContentfulSpaceDefaults & (
+    Record<`content_type_${string}`, string>
+  )
+);
 
 export type ContentfulRequestQuery = {
   preview?: boolean,

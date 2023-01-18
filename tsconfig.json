@@ -24,6 +24,5 @@
     "**/node_modules",
     "**/.*/",
     "**/lib",
-    "src/**/*.test.ts",
   ]
 }

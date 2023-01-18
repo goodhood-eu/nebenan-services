@@ -1,21 +1,22 @@
 import { assert } from 'chai';
-import { ErrorPayload, ScaffoldingData } from './types';
+import { isNetworkError } from 'nebenan-redux-tools/lib/network/utils';
+import { ScaffoldingData } from './types';
 import {
   configureContentful,
+  createContentfulRequest,
+  formatImage,
   formatImages,
   getContentfulRequest,
-  formatImage,
-  createContentfulRequest,
 } from './utils';
 import data from './scaffolding.test';
 
-const SPACE = {
+type Space = Parameters<typeof configureContentful>[0]['space'];
+const SPACE: Space = {
   id: 1,
   token: 'token',
   content_type_test: 'secret',
 };
 const LANGUAGE = 'klingon';
-
 
 describe('modules/contentful/utils', () => {
   beforeEach(() => {
@@ -33,7 +34,7 @@ describe('modules/contentful/utils', () => {
     assert.isObject(testResult, 'returns correct data format');
     assert.isString(testResult?.url, 'sets default url');
 
-    const spaceUrl = getContentfulRequest('test')?.query?.query_string;
+    const spaceUrl = getContentfulRequest('test').query?.query_string;
 
     assert.isTrue(/^\/spaces\/1\/entries/.test(spaceUrl as string), 'generate space entries route');
     assert.include(spaceUrl, 'access_token=token', 'token is included');
@@ -58,9 +59,6 @@ describe('modules/contentful/utils', () => {
         });
 
         const payload = await createContentfulRequest('test');
-        // TODO: Figure out what is wrong with this one
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         assert.deepEqual(payload, data.validResponse);
       });
     });
@@ -78,7 +76,11 @@ describe('modules/contentful/utils', () => {
         try {
           await createContentfulRequest('test');
         } catch (error) {
-          assert.equal((error as ErrorPayload).statusCode, 500);
+          const isReallyANetworkError = isNetworkError(error);
+          assert.isTrue(isReallyANetworkError);
+          if (!isReallyANetworkError) return;
+
+          assert.equal(error.statusCode, 500);
         }
       });
     });
@@ -95,8 +97,10 @@ describe('modules/contentful/utils', () => {
 
         try {
           await createContentfulRequest('test');
-        } catch (error) {
-          assert.equal((error as ErrorPayload).message, "Contentful request 'test' contains validation errors");
+        } catch (_error) {
+          const error = _error as Error;
+
+          assert.equal(error.message, "Contentful request 'test' contains validation errors");
         }
       });
     });

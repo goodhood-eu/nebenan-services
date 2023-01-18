@@ -2,7 +2,7 @@ import { createPath, History, Update } from 'history';
 import { scroll } from 'nebenan-helpers/lib/dom';
 import eventproxy from 'nebenan-eventproxy';
 
-export type UnsubscribeCallback = () => void;
+type UnsubscribeCallback = () => void;
 
 const ATTEMPTS_RATE = 300;
 const PROXIMITY = 100;

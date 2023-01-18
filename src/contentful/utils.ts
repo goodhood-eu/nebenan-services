@@ -1,26 +1,28 @@
-import { stringify } from 'qs';
 import _createRequest from 'nebenan-redux-tools/lib/network/request';
+import { stringify } from 'qs';
+import { isNetworkError } from 'nebenan-redux-tools/lib/network/utils';
 import {
-  ContentfulRequestQuery,
-  GetQueryRequestReturnValue,
   ContentfulAssetObject,
   ContentfulEntity,
-  ContentfulSpace, FormattedImage,
+  ContentfulRequestQuery,
+  ContentfulResponseObject,
+  ContentfulSpace,
+  FormattedImage,
 } from './types';
 
-export type ContentfulOptions = {
+type ContentfulOptions = {
   space: ContentfulSpace;
   language: string;
   preview: boolean;
   url: string;
-  createRequest?: typeof _createRequest;
+  createRequest?: typeof _createRequest<ContentfulResponseObject> | undefined;
 };
 
 let space: ContentfulSpace | undefined;
 let language: string | undefined;
 let preview = false;
 let proxyUrl: string | undefined;
-let createRequest: typeof _createRequest;
+let createRequest: typeof _createRequest<ContentfulResponseObject> | undefined;
 
 export const configureContentful = (options: ContentfulOptions): void => {
   space = options.space;
@@ -30,17 +32,23 @@ export const configureContentful = (options: ContentfulOptions): void => {
   createRequest = options.createRequest || _createRequest;
 };
 
+type RequestOptions = Parameters<
+NonNullable<typeof createRequest>
+>[0];
+
+
 /**
  * @deprecated use #createContentfulRequest instead
  */
 export const getContentfulRequest = (
   type: string,
   contentQuery?: Record<string, unknown>,
-): GetQueryRequestReturnValue => {
-  if (!space) return;
+): RequestOptions => {
+  if (!space || !proxyUrl) throw new Error('not initialized');
+
   const { id, token, preview_token } = space;
   const access_token = preview ? preview_token : token;
-  const content_type = (space as ContentfulSpace<typeof type>)[`content_type_${type}`];
+  const content_type = space[`content_type_${type}`];
 
   const proxyQuery = {
     ...contentQuery,
@@ -58,19 +66,23 @@ export const getContentfulRequest = (
     query,
     url: proxyUrl,
     graceful: true,
-  };
+  } satisfies RequestOptions;
 };
 
 const hasValidationErrors = (
-  payload?: Record<string, unknown>,
+  payload?: ContentfulResponseObject,
 ) => Boolean(payload?.errors);
 
 export const createContentfulRequest = async (
   type: string,
   contentQuery?: Record<string, unknown>,
-): Promise<GetQueryRequestReturnValue> => {
-  const payload = await createRequest(getContentfulRequest(type, contentQuery));
-  if (hasValidationErrors(payload)) throw new Error(`Contentful request '${type}' contains validation errors`);
+) => {
+  if (!createRequest) throw new Error('not initialized');
+
+  const contentfulRequest = getContentfulRequest(type, contentQuery);
+  const payload = await createRequest(contentfulRequest);
+
+  if (!isNetworkError(payload) && hasValidationErrors(payload)) throw new Error(`Contentful request '${type}' contains validation errors`);
 
   return payload;
 };
@@ -90,7 +102,7 @@ export const formatImage = (
 export const formatImages = (
   list: ContentfulEntity[],
   assets: Record<string, ContentfulAssetObject>,
-): FormattedImage[] => (
+) => (
   list.reduce((collection, item) => {
     const { id } = item.sys;
     const url = formatImage(item, assets);

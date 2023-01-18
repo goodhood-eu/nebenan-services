@@ -20,7 +20,7 @@ const isDisabled = (): boolean => (
 );
 
 export const setGTMLoaded = (value: boolean) => { gtmLoaded = value; };
-export const setDisabled = (value: boolean) => { forceDisable = value; };
+export const setEnabled = (isEnabled: boolean) => { forceDisable = !isEnabled; };
 
 export const track: TrackFunction = (payload, done) => {
   if (isEmpty(payload)) throw new Error('Tracking payload required');
@@ -75,5 +75,4 @@ export const createAnalytics = (
   return { startTracking };
 };
 
-export { UTM_KEY } from './actions';
-export { configureAnalytics } from './tracking';
+export { configureAnalytics, getUTMKeysFromSession } from './tracking';

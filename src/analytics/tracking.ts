@@ -26,19 +26,22 @@ export const generateEnvironment = (
   track: TrackFunction,
 ) => track({ environment });
 
+export const getUTMFromSession = (session: State['session']) => session[UTM_KEY];
+export const getUTMKeysFromSession = (session: State['session']) => session[UTM_KEY]?.keys;
+
 export const removeExpiredUtm = (
   store: StoreObject,
   { session }: State,
 ) => {
-  const currentUTM = session[UTM_KEY];
+  const currentUTM = getUTMFromSession(session);
   if (currentUTM && isExpired(currentUTM.timestamp, utmLifetime)) {
     store.dispatch(deleteUtm());
   }
 };
 
 const trackUtm = (track: TrackFunction, { session }: State): void => {
-  const currentUTM = session[UTM_KEY];
-  if (currentUTM) track(currentUTM.keys);
+  const keys = getUTMKeysFromSession(session);
+  if (keys) track(keys);
 };
 
 export const generateClientId = (

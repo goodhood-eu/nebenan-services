@@ -2,10 +2,13 @@ import type { Store } from 'redux';
 import { Location } from 'history';
 import { CLIENT_ID_KEY, SESSION_ID_KEY, UTM_KEY } from './actions';
 
+
+// TODO: clean up exports
+
 export type TrackFunction = (payload: Record<string, unknown>, done?: () => void) => void;
 export type State = {
   session: {
-    [UTM_KEY]: {
+    [UTM_KEY]?: {
       timestamp: number;
       keys: Record<string, unknown>;
     },
