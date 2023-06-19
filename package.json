@@ -46,12 +46,12 @@
     "nebenan-react-hocs": "^9.1.0",
     "nebenan-redux-tools": "^6.6.0",
     "normalizr": "^3.6.2",
-    "qs": "^6.11.0",
-    "react": "^18.2.0",
-    "react-redux": "^7.2.9",
-    "react-dom": "^18.2.0"
+    "qs": "^6.11.0"
   },
   "peerDependencies": {
-    "@babel/runtime": "^7.x.x"
+    "@babel/runtime": "^7.12.5",
+    "react": ">= 16.14.0",
+    "react-dom": ">= 16.14.0",
+    "react-redux": "^7.2.6"
   }
 }
