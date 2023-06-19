@@ -1,11 +1,10 @@
 {
   "name": "nebenan-services",
   "description": "A collection of client services",
-  "author": "Nebenan.de <max@nebenan.de>",
-  "license": "SEE LICENSE IN LICENSE FILE",
-  "readmeFilename": "README.md",
-  "homepage": "https://nebenan.de/",
-  "repository": "good-hood-gmbh/nebenan-services",
+  "author": "Good Hood GmbH <tech@nebenan.de>",
+  "license": "MIT",
+  "homepage": "https://github.com/goodhood-eu/nebenan-services#readme",
+  "repository": "github:good-hood-gmbh/nebenan-services",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-services/issues",
   "version": "6.2.0",
   "files": [
