@@ -5,10 +5,15 @@ jobs:
     name: Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm ci
-      - run: npm run check
+
+      - name: Run npm install and test
+        run: |
+          npm ci
+          npm run check
