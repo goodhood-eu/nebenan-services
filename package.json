@@ -35,7 +35,7 @@
     "eslint": "^8.43.0",
     "eslint-config-nebenan-base": "^2.0.2",
     "mocha": "^10.2.0",
-    "sinon": "^15.1.2"
+    "sinon": "^15.2.0"
   },
   "dependencies": {
     "history": "^4.10.1",
@@ -43,7 +43,7 @@
     "nebenan-eventproxy": "^1.0.0",
     "nebenan-helpers": "^7.2.0",
     "nebenan-react-hocs": "^9.1.0",
-    "nebenan-redux-tools": "^6.6.0",
+    "nebenan-redux-tools": "^6.7.0",
     "normalizr": "^3.6.2",
     "qs": "^6.11.2"
   },
