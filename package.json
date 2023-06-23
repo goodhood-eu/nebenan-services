@@ -4,8 +4,8 @@
   "author": "Good Hood GmbH <tech@nebenan.de>",
   "license": "MIT",
   "homepage": "https://github.com/goodhood-eu/nebenan-services#readme",
-  "repository": "github:good-hood-gmbh/nebenan-services",
-  "bugs": "https://github.com/good-hood-gmbh/nebenan-services/issues",
+  "repository": "github:goodhood-eu/nebenan-services",
+  "bugs": "https://github.com/goodhood-eu/nebenan-services/issues",
   "version": "6.3.0",
   "files": [
     "lib/*.js",
