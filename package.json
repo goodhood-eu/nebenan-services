@@ -6,7 +6,7 @@
   "homepage": "https://github.com/goodhood-eu/nebenan-services#readme",
   "repository": "github:good-hood-gmbh/nebenan-services",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-services/issues",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "files": [
     "lib/*.js",
     "lib/*/*.js"
