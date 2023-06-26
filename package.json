@@ -48,7 +48,7 @@
     "browserslist-config-nebenan": "^1.0.1",
     "chai": "^4.3.7",
     "eslint": "^8.43.0",
-    "eslint-config-nebenan-base": "^2.0.2",
+    "eslint-config-nebenan": "^4.4.0",
     "mocha": "^10.2.0",
     "redux": "^4.2.1",
     "rollup": "^3.25.2",
