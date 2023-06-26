@@ -10,7 +10,7 @@ module.exports = (api) => {
   const plugins = [
     ['add-module-exports', { addDefaultProperty: true }],
     '@babel/plugin-transform-strict-mode',
-    '@babel/plugin-transform-runtime'
+    '@babel/plugin-transform-runtime',
   ];
 
   return { presets, plugins };

@@ -1,5 +1,5 @@
 declare module 'nebenan-redux-tools/lib/network/request' {
-  // eslint-disable-next-line import/no-unresolved
+  // eslint-disable-next-line import/no-extraneous-dependencies
   import { Method } from 'axios';
 
   type SuccessResponse<T> = T & Record<string, unknown>;
