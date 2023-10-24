@@ -1,6 +1,6 @@
 import { createPath } from 'history';
-import { scroll } from 'nebenan-helpers/lib/dom';
 import eventproxy from 'nebenan-eventproxy';
+import { scroll } from 'nebenan-helpers/lib/dom';
 
 const ATTEMPTS_RATE = 300;
 const PROXIMITY = 100;
@@ -36,7 +36,9 @@ export default (history, node) => {
       // prevent from scrolling endlessly
       if (iterations > MAX_ATTEMPTS) return stopAutoScroll();
 
-      nodeScroll.to(targetPosition);
+      if (!history.location.hash) {
+        nodeScroll.to(targetPosition);
+      }
       tid = setTimeout(scroller, ATTEMPTS_RATE);
     };
 
