@@ -35,8 +35,8 @@ export default (history, node) => {
 
       // prevent from scrolling endlessly
       if (iterations > MAX_ATTEMPTS) return stopAutoScroll();
-      
-      if(!history.location.hash) {
+
+      if (!history.location.hash) {
         nodeScroll.to(targetPosition);
       }
       tid = setTimeout(scroller, ATTEMPTS_RATE);
