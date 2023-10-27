@@ -6,7 +6,7 @@
   "homepage": "https://github.com/goodhood-eu/nebenan-services#readme",
   "repository": "github:goodhood-eu/nebenan-services",
   "bugs": "https://github.com/goodhood-eu/nebenan-services/issues",
-  "version": "6.3.1",
+  "version": "6.3.2",
   "files": [
     "lib/*.js",
     "lib/*/*.js"
@@ -24,26 +24,26 @@
     "yalc": "npm i && npm run build && yalc push"
   },
   "devDependencies": {
-    "@babel/cli": "^7.22.5",
-    "@babel/core": "^7.22.5",
-    "@babel/plugin-transform-runtime": "^7.22.5",
+    "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.2",
+    "@babel/plugin-transform-runtime": "^7.23.2",
     "@babel/plugin-transform-strict-mode": "^7.22.5",
-    "@babel/preset-env": "^7.22.5",
+    "@babel/preset-env": "^7.23.2",
     "babel-plugin-add-module-exports": "^1.0.4",
-    "browserslist-config-nebenan": "^1.0.1",
-    "chai": "^4.3.7",
-    "eslint": "^8.43.0",
-    "eslint-config-nebenan-base": "^2.0.2",
+    "browserslist-config-nebenan": "^1.0.2",
+    "chai": "^4.3.10",
+    "eslint": "^8.52.0",
+    "eslint-config-nebenan-base": "^2.0.3",
     "mocha": "^10.2.0",
-    "sinon": "^15.2.0"
+    "sinon": "^17.0.0"
   },
   "dependencies": {
     "history": "^4.10.1",
     "lodash": "^4.17.21",
-    "nebenan-eventproxy": "^1.0.0",
-    "nebenan-helpers": "^7.2.0",
-    "nebenan-react-hocs": "^9.1.0",
-    "nebenan-redux-tools": "^6.7.0",
+    "nebenan-eventproxy": "^1.0.1",
+    "nebenan-helpers": "^7.2.2",
+    "nebenan-react-hocs": "^9.2.1",
+    "nebenan-redux-tools": "^6.8.3",
     "normalizr": "^3.6.2",
     "qs": "^6.11.2"
   },
