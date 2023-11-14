@@ -1,6 +1,6 @@
 import { createPath, History, Update } from 'history';
-import { scroll } from 'nebenan-helpers/lib/dom';
 import eventproxy from 'nebenan-eventproxy';
+import { scroll } from 'nebenan-helpers/lib/dom';
 
 type UnsubscribeCallback = () => void;
 
@@ -38,7 +38,9 @@ const createScrollManager = (history: History, node: Window) => {
       // prevent from scrolling endlessly
       if (attempts > MAX_ATTEMPTS) return stopAutoScroll();
 
-      nodeScroll.to(targetPosition);
+      if (!history.location.hash) {
+        nodeScroll.to(targetPosition);
+      }
       timer = setTimeout(scroller, ATTEMPTS_RATE);
     };
 
