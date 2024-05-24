@@ -23,28 +23,28 @@
     "test:tofile": "npm run build && TZ='GMT' mocha --no-colors -R spec \"test/**/*.js\" 2>&1 | tee test-report.log"
   },
   "devDependencies": {
-    "@babel/cli": "^7.23.0",
-    "@babel/core": "^7.23.3",
-    "@babel/plugin-transform-runtime": "^7.23.3",
-    "@babel/plugin-transform-strict-mode": "^7.23.3",
-    "@babel/preset-env": "^7.23.3",
+    "@babel/cli": "^7.24.5",
+    "@babel/core": "^7.24.5",
+    "@babel/plugin-transform-runtime": "^7.24.3",
+    "@babel/plugin-transform-strict-mode": "^7.24.1",
+    "@babel/preset-env": "^7.24.5",
     "babel-plugin-add-module-exports": "^1.0.4",
     "browserslist-config-nebenan": "^1.0.2",
     "chai": "^4.3.10",
     "eslint": "^8.53.0",
     "eslint-config-nebenan-base": "^2.0.3",
-    "mocha": "^10.2.0",
-    "sinon": "^17.0.1"
+    "mocha": "^10.4.0",
+    "sinon": "^18.0.0"
   },
   "dependencies": {
     "history": "^4.10.1",
     "lodash": "^4.17.21",
     "nebenan-eventproxy": "^1.0.1",
-    "nebenan-helpers": "^7.2.2",
-    "nebenan-react-hocs": "^9.2.1",
+    "nebenan-helpers": "^8.0.0",
+    "nebenan-react-hocs": "^10.0.0",
     "nebenan-redux-tools": "^6.9.0",
     "normalizr": "^3.6.2",
-    "qs": "^6.11.2"
+    "qs": "^6.12.1"
   },
   "peerDependencies": {
     "@babel/runtime": "^7.12.5",
