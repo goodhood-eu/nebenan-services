@@ -23,11 +23,11 @@
     "test:tofile": "npm run build && TZ='GMT' mocha --no-colors -R spec \"test/**/*.js\" 2>&1 | tee test-report.log"
   },
   "devDependencies": {
-    "@babel/cli": "^7.24.5",
-    "@babel/core": "^7.24.5",
-    "@babel/plugin-transform-runtime": "^7.24.3",
-    "@babel/plugin-transform-strict-mode": "^7.24.1",
-    "@babel/preset-env": "^7.24.5",
+    "@babel/cli": "^7.24.6",
+    "@babel/core": "^7.24.6",
+    "@babel/plugin-transform-runtime": "^7.24.6",
+    "@babel/plugin-transform-strict-mode": "^7.24.6",
+    "@babel/preset-env": "^7.24.6",
     "babel-plugin-add-module-exports": "^1.0.4",
     "browserslist-config-nebenan": "^1.0.2",
     "chai": "^4.3.10",
